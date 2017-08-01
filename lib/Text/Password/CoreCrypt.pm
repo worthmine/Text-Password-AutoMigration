@@ -3,12 +3,16 @@ our $VERSION = "0.01";
 
 use 5.008001;
 use Moose;  # this module is NOT based on Moose but it need to succeed
+
+has minimum => ( is => 'ro', isa => 'Int', default => 4 );
+has default => ( is => 'rw', isa => 'Int', default => 8 );
+has readability => ( is => 'rw', isa => 'Bool', default => 1 );
+
 __PACKAGE__->meta->make_immutable;
 no Moose;
 
 use Carp;
 my @ascii = ( '!' .. '/', 0 .. 9, ':' .. '@', 'A'..'Z', '[' .. '`', 'a'..'z', '{' .. '~' );
-our ( $Min, $Default ) = ( 4, 8 );	# minimum and default length which is allowed as a Password
 
 =encoding utf-8
 
@@ -90,7 +94,8 @@ salt will be made automatically
 sub encrypt {
     my $self = shift;
     my $input = shift;
-    croak __PACKAGE__ ." requires at least $Min length" if length $input < $Min;
+    my $min = $self->minimum();
+    croak __PACKAGE__ ." requires at least $min length" if length $input < $min;
     die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
     if $input !~ /[!-~]/ or $input =~ /\s/;
     carp __PACKAGE__ . " ignores the password with over 8bytes" unless $input =~ /^[!-~]{8}$/;
@@ -115,14 +120,17 @@ default lebgth is 8
 
 sub generate {
     my $self = shift;
-    my $length = shift || $Default;
+    my $length = shift || $self->default();
+    my $min = $self->minimum();
+
     croak "unvalid length was set" unless $length =~ /^\d+$/;
     croak ref($self) . "::generate requires list context" unless wantarray;
-    croak ref($self) . "::generate requires at least $Min length" if $length < $Min;
+    croak ref($self) . "::generate requires at least $min length" if $length < $min;
 
     my $raw;
     do {	# redo unless it gets enough readability
         $raw = $self->nonce($length);
+        return $raw, $self->encrypt($raw) unless $self->readability();
     }while( $raw =~ /[0Oo1Il|!2Zz5sS\$6b9qCcKkUuVvWwXx.,:;~\-^'"`]/i );
 
     return $raw, $self->encrypt($raw);

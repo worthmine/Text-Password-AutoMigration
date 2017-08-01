@@ -54,5 +54,8 @@
    "release_status" : "unstable",
    "version" : "0.01",
    "x_authority" : "cpan:{{WORTHMINE}}",
+   "x_contributors" : [
+      "Yuki Yoshida <worthmine@gmail.com>"
+   ],
    "x_serialization_backend" : "JSON::PP version 2.93"
 }

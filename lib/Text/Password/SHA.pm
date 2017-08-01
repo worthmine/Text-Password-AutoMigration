@@ -15,7 +15,7 @@ our $Min = 4;	# minimum length which is allowed as a Password
 
 =head1 NAME
 
-Text::Password::SHA - generate and verify Password with unix_md5_crypt()
+Text::Password::SHA - generate and verify Password with SHA
 
 =head1 SYNOPSIS
 
@@ -27,9 +27,7 @@ Text::Password::SHA - generate and verify Password with unix_md5_crypt()
 
 =head1 DESCRIPTION
 
-Text::Password::MD5 is the part of Text::Password::AutoMigration.
-
-B<DON'T USE> directly.
+Text::Password::SHA is the part of Text::Password::AutoMigration.
 
 =head2 Constructor and initialization
 

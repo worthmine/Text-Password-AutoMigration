@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 5;
+use Test::More tests => 6;
 
 use lib 'lib';
 
@@ -28,11 +28,23 @@ subtest "generate with CORE::crypt" => sub {                            # 3
 
 };
 
+$passwd->readability(0);
+subtest "generate unreadable strings" => sub {                          # 4
+    plan tests => 3;
+    ( $raw, $hash ) = $passwd->generate();
+    like $raw, qr/^[!-~]{8}$/, "generated raw passwd: $raw";
+    like $hash, qr/^[!-~]{13}$/, "generated hash: $hash";
+    $flag = $passwd->verify( $raw, $hash );
+    is $flag, 1, "verify: " . $ok[$flag];
+
+};
+$passwd->readability(1);
+
 eval{ $passwd->verify( $raw, '$1$l1PMyqG!$mNPUHQnly7oLJjt/jb/m/.' ) };
 like $@, qr/^CORE::crypt makes 13bytes hash strings. Your data must be wrong./i,
-    "catch the error with invalid strings";                             # 4
+    "catch the error with invalid strings";                             # 5
 
 ( $raw, $hash ) = eval{ $passwd->generate(3) };
-like $@ , qr/^Text::Password::CoreCrypt::generate requires at least 4 length/i, "fail to make too short password";                                                # 5
+like $@ , qr/^Text::Password::CoreCrypt::generate requires at least 4 length/i, "fail to make too short password";                                                # 6
 
 done_testing();

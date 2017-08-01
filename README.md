@@ -1,0 +1,1 @@
+lib/Text/Password/AutoMigration.pm

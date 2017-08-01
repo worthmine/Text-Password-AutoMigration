@@ -42,6 +42,8 @@
       },
       "runtime" : {
          "requires" : {
+            "Crypt::Passwd::XS" : "0.601",
+            "Crypt::PasswdMD5" : "1.4",
             "perl" : "5.008001"
          }
       },

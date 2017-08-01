@@ -29,3 +29,6 @@ cover_db/
 MYMETA.*
 
 /Text-Password-AutoMigration-*
+/.build
+!Build/
+!META.json

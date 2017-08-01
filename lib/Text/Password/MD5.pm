@@ -65,7 +65,7 @@ default length is 8
 
 =item encrypt($raw)
 
-returns hash with CORE::crypt
+returns hash with unix_md5_crypt
 
 salt will be made automatically
 
@@ -92,7 +92,7 @@ genarates pair of new password and it's hash
 
 not much readable characters(0Oo1Il|!2Zz5sS\$6b9qCcKkUuVvWwXx.,:;~\-^'"`) are fallen
 
-default lebgth is 8
+default length is 8
 
 =back
  
@@ -114,4 +114,4 @@ it under the same terms as Perl itself.
 
 =head1 AUTHOR
 
-Yuki Yoshida(worthmine) E<lt>worthmine@gmail.comE<gt>
+ Yuki Yoshida(worthmine) E<lt>worthmine!at!gmail.comE<gt>

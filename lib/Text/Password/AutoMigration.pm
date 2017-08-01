@@ -40,7 +40,7 @@ All You have to do are those:
 
 you can set Default length with 'default' like below
 
- $passwd = Text::Pasword::AutoMiglation->new( default => 12 );
+ $pwd = Text::Pasword::AutoMiglation->new( default => 12 );
 
 =head2 Methods and Subroutines
 
@@ -71,8 +71,8 @@ default length is 8
 
 =item encrypt($raw)
 
-returns hash with CORE::crypt
- 
+returns hash with unix_sha512_crypt
+
 salt will be made automatically
 
 =item generate($length)
@@ -81,7 +81,7 @@ genarates pair of new password and it's hash
 
 not much readable characters(0Oo1Il|!2Zz5sS\$6b9qCcKkUuVvWwXx.,:;~\-^'"`) are fallen
 
-default lebgth is 8
+default length is 8
 
 =back
 
@@ -103,4 +103,4 @@ it under the same terms as Perl itself.
 
 =head1 AUTHOR
 
-Yuki Yoshida(worthmine) E<lt>worthmine@gmail.comE<gt>
+Yuki Yoshida(worthmine) E<lt>worthmine!at!gmail.comE<gt>

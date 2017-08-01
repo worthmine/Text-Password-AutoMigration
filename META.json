@@ -1,5 +1,5 @@
 {
-   "abstract" : "generate and verify Password with SHA",
+   "abstract" : "generate and verify Password with any contexts",
    "author" : [
       "Yuki Yoshida(worthmine) <worthmine@gmail.com>"
    ],

@@ -2,7 +2,10 @@ Revision history for Perl extension Text-Password-AutoMigration
 
 {{$NEXT}}
 
+0.02 2017-08-01T20:58:19Z
+ - fix the PODs
+
 0.01 2017-08-01T15:10:34Z
 
-    - original version
+ - original version
 

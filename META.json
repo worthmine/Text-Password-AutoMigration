@@ -63,7 +63,7 @@
          "web" : "https://github.com/worthmine/Text-Password-AutoMigration"
       }
    },
-   "version" : "0.01",
+   "version" : "0.02",
    "x_authority" : "cpan:{{WORTHMINE}}",
    "x_contributors" : [
       "Yuki Yoshida <worthmine@gmail.com>"

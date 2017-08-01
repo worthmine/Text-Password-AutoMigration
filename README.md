@@ -29,9 +29,21 @@ All You have to do are those:
 
 ### new()
 
-you can set Default length with 'default' like below
+No arguments are required. But you can set some parameters.
 
-    $pwd = Text::Pasword::AutoMiglation->new( default => 12 );
+- default
+
+    You can set default length with param 'default' like below
+
+        $pwd = Text::Pasword::AutoMiglation->new( default => 12 );
+
+- readablity
+
+    Or you can set default strength for password with param 'readablity'.
+
+    It must be a Boolen, default is 1.
+
+    If it was set as 0, you can generate more strong passwords with generate()
 
 ## Methods and Subroutines
 

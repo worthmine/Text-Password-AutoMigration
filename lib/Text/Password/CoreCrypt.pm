@@ -1,5 +1,5 @@
 package Text::Password::CoreCrypt;
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
 use 5.008001;
 use Moose;  # this module is NOT based on Moose but it need to succeed

@@ -37,10 +37,26 @@ All You have to do are those:
 =head2 Constructor and initialization
 
 =head3 new()
+ 
+No arguments are required. But you can set some parameters.
 
-you can set Default length with 'default' like below
+=over
+
+=item default
+
+You can set default length with param 'default' like below
 
  $pwd = Text::Pasword::AutoMiglation->new( default => 12 );
+
+=item readablity
+
+Or you can set default strength for password with param 'readablity'.
+
+It must be a Boolen, default is 1.
+
+If it was set as 0, you can generate more strong passwords with generate()
+
+=back
 
 =head2 Methods and Subroutines
 

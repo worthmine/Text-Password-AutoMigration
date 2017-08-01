@@ -31,7 +31,25 @@ Text::Password::SHA is the part of Text::Password::AutoMigration.
 
 =head3 new()
 
-no arguments are required
+No arguments are required. But you can set some parameters.
+
+=over
+
+=item default
+
+You can set default length with param 'default' like below
+
+ $pwd = Text::Pasword::AutoMiglation->new( default => 12 );
+
+=item readablity
+
+Or you can set default strength for password with param 'readablity'.
+
+It must be a Boolen, default is 1.
+
+If it was set as 0, you can generate more strong passwords with generate()
+ 
+=back
 
 =head2 Methods and Subroutines
 
@@ -117,4 +135,4 @@ it under the same terms as Perl itself.
 
 =head1 AUTHOR
 
- Yuki Yoshida(worthmine) E<lt>worthmine!at!gmail.comE<gt>
+Yuki Yoshida(worthmine) E<lt>worthmine!at!gmail.comE<gt>

@@ -8,8 +8,6 @@ extends 'Text::Password::CoreCrypt';
 use Carp;
 use Crypt::PasswdMD5;
 
-our ( $Min, $Default ) = ( 4, 8 );	# minimum and default length which is allowed as a Password
-
 =encoding utf-8
 
 =head1 NAME
@@ -76,7 +74,8 @@ salt will be made automatically
 override 'encrypt' => sub {
     my $self = shift;
     my $input = shift;
-    croak __PACKAGE__ ." requires at least $Min length" if length $input < $Min;
+    my $min = $self->minimum();
+    croak __PACKAGE__ ." requires at least $min length" if length $input < $min;
      die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
     if $input !~ /[!-~]/ or $input =~ /\s/;
 

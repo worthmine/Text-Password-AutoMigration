@@ -5,20 +5,15 @@ use 5.008001;
 use Moose;
 extends 'Text::Password::SHA';
 
-sub BUILD {
-    my $self = shift;
-    return Text::Password::SHA->new(@_);
-}
-
 =encoding utf-8
 
 =head1 NAME
 
-Text::Password::SHA - generate and verify Password with SHA
+Text::Password::AutoMigration - generate and verify Password with any contexts
 
 =head1 SYNOPSIS
 
- my $pwd = Text::Password::SHA->new();
+ my $pwd = Text::Password::AutoMigration->new();
  my( $raw, $hash ) = $pwd->genarate();          # list context is required
  my $input = $req->body_parameters->{passwd};
  my $data = $pwd->encrypt($input);              # salt is made automatically
@@ -26,13 +21,26 @@ Text::Password::SHA - generate and verify Password with SHA
 
 =head1 DESCRIPTION
 
-Text::Password::SHA is the part of Text::Password::AutoMigration.
+Text::Password::AutoMigration is the Module for lasy Administrators.
+
+It always generates the password with SHA512.
+ 
+And verifies Automatically the hash with
+B<CORE::crypt>, B<MD5>, B<SHA1 by hex>, B<SHA256> and of course B<SHA512>.
+
+All You have to do are those:
+ 
+1. use this module
+
+2. replace periodically the hashes in your DB.
 
 =head2 Constructor and initialization
 
 =head3 new()
 
-no arguments are required
+you can set Default length with 'default' like below
+
+ $passwd = Text::Pasword::AutoMiglation->new( default => 12 );
 
 =head2 Methods and Subroutines
 

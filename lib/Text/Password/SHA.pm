@@ -32,7 +32,7 @@ Text::Password::SHA is the part of Text::Password::AutoMigration.
 
 No arguments are required. But you can set some parameters.
 
-=over
+ =over
 
 =item default
 
@@ -47,17 +47,17 @@ Or you can set default strength for password with param 'readablity'.
 It must be a Boolen, default is 1.
 
 If it was set as 0, you can generate more strong passwords with generate()
+
+$pwd = Text::Pasword::AutoMiglation->new( readability => 0 );
  
 =back
 
 =head2 Methods and Subroutines
 
-=over
-
-=item verify( $raw, $hash )
+=head3 verify( $raw, $hash )
 
 returns true if the verify is success
- 
+
 =cut
 
 override 'verify' => sub {
@@ -79,15 +79,15 @@ override 'verify' => sub {
     return 0;
 };
 
-=item nonce($length)
+=head3 nonce($length)
 
-generate the strings with enough strength
+generates the strings with enough strength
 
-default length is 8
+the length defaults to 8($self->default)
 
-=item encrypt($raw)
+=head3 encrypt($raw)
 
-returns hash with unix_sha512_crypt
+returns hash with unix_md5_crypt()
 
 salt will be made automatically
  
@@ -106,15 +106,14 @@ override 'encrypt' => sub {
     return Crypt::Passwd::XS::unix_sha512_crypt( $input, $salt );
 };
 
-=item generate($length)
+=head3 generate($length)
 
 genarates pair of new password and it's hash
 
 not much readable characters(0Oo1Il|!2Zz5sS\$6b9qCcKkUuVvWwXx.,:;~\-^'"`) are fallen
+unless $self->readability is 0.
 
-default length is 8
-
-=back
+the length defaults to 8($self->default)
  
 =cut
 

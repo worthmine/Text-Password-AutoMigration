@@ -1,7 +1,7 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "generate and verify Password with SHA",
    "author" : [
-      ", Yuki Yoshida All rights reserved."
+      "Yuki Yoshida(worthmine) <worthmine@gmail.com>"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Minilla/v3.0.11, CPAN::Meta::Converter version 2.150010",
@@ -54,8 +54,5 @@
    "release_status" : "unstable",
    "version" : "0.01",
    "x_authority" : "cpan:{{WORTHMINE}}",
-   "x_contributors" : [
-      "Yuki Yoshida <worthmine@gmail.com>"
-   ],
    "x_serialization_backend" : "JSON::PP version 2.93"
 }

@@ -114,7 +114,7 @@ __END__
 
 =item L<github|https://github.com/worthmine/Text-Password-AutoMigration>
 
-=item  L<cpan|http://search.cpan.org/perldoc?Text%3A%3APassword%3A%3AAutoMigration>
+=item L<cpan|http://search.cpan.org/perldoc?Text%3A%3APassword%3A%3AAutoMigration>
 
 =back
 

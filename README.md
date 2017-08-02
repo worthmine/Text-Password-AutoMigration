@@ -45,31 +45,40 @@ No arguments are required. But you can set some parameters.
 
     If it was set as 0, you can generate more strong passwords with generate()
 
+        $pwd = Text::Pasword::AutoMiglation->new( readability => 0 );
+        
+
 ## Methods and Subroutines
 
-- verify( $raw, $hash )
+### verify( $raw, $hash )
 
-    returns true if the verify is success
+returns true if the verify is success
 
-- nonce($length)
+### nonce($length)
 
-    generate the strings with enough strength
+generates the strings with enough strength
 
-    default length is 8
+the length defaults to 8($self->default)
 
-- encrypt($raw)
+### encrypt($raw)
 
-    returns hash with unix\_sha512\_crypt
+returns hash with unix\_sha512\_crypt()
 
-    salt will be made automatically
+salt will be made automatically
 
-- generate($length)
+### generate($length)
 
-    genarates pair of new password and it's hash
+genarates pair of new password and it's hash
 
-    not much readable characters(0Oo1Il|!2Zz5sS\\$6b9qCcKkUuVvWwXx.,:;~\\-^'"\`) are fallen
+not much readable characters(0Oo1Il|!2Zz5sS\\$6b9qCcKkUuVvWwXx.,:;~\\-^'"\`) are fallen
+unless $self->readability is 0.
 
-    default length is 8
+the length defaults to 8($self->default)
+
+# SEE ALSO
+
+- [github](https://github.com/worthmine/Text-Password-AutoMigration)
+- [cpan](http://search.cpan.org/perldoc?Text%3A%3APassword%3A%3AAutoMigration)
 
 # LICENSE
 

@@ -121,6 +121,7 @@ sub encrypt {
     my $salt = '';
     $salt .= $ascii[ rand @ascii ] until length $salt == 2;
 
+    warn $salt;
     my $encrypt;
     do{ $encrypt = CORE::crypt( $input, $salt ) } until $encrypt;
     return $encrypt;

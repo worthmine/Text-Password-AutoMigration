@@ -32,7 +32,7 @@ Text::Password::SHA is the part of Text::Password::AutoMigration.
 
 No arguments are required. But you can set some parameters.
 
- =over
+=over
 
 =item default
 
@@ -87,7 +87,7 @@ the length defaults to 8($self->default)
 
 =head3 encrypt($raw)
 
-returns hash with unix_md5_crypt()
+returns hash with unix_sha512_crypt()
 
 salt will be made automatically
  

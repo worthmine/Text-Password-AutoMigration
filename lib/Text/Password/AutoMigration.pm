@@ -108,6 +108,16 @@ no Moose;
 
 __END__
 
+=head1 SEE ALSO
+
+=over
+
+=item L<github|https://github.com/worthmine/Text-Password-AutoMigration>
+
+=item  L<cpan|http://search.cpan.org/perldoc?Text%3A%3APassword%3A%3AAutoMigration>
+
+=back
+
 =head1 LICENSE
 
 Copyright (C) Yuki Yoshida(worthmine).

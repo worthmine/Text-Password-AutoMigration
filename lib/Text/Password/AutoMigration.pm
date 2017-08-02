@@ -73,7 +73,9 @@ override 'verify' => sub {
     die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
     if $input !~ /[!-~]/ or $input =~ /\s/;
 
-     return super() if $data =~ /^\$[56]\$([!-~]{1,8})\$[!-~]{43,86}$/
+     return super() if
+       $data =~ /^\$6\$[!-~]{1,8}\$[!-~]{86}$/
+    or $data =~ /^\$5\$[!-~]{1,8}\$[!-~]{43}$/
     or $data =~ /^[0-9a-f]{40}$/i;
     return $self->Text::Password::MD5::verify(@_);
 };

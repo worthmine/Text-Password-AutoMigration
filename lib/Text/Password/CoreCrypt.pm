@@ -119,9 +119,9 @@ sub encrypt {
     carp __PACKAGE__ . " ignores the password with over 8bytes" unless $input =~ /^[!-~]{8}$/;
 
     my $encrypt;
-    my @ascii = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9, '.', '/' );
+    my @seeds = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9, '.', '/' );
     my $salt = '';
-    $salt .= $ascii[ rand @ascii ] until length $salt == 2;
+    $salt .= $seeds[ rand @seeds ] until length $salt == 2;
 
     return $encrypt = CORE::crypt( $input, $salt )
 }

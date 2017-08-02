@@ -1,7 +1,7 @@
 package Text::Password::CoreCrypt;
 our $VERSION = "0.02";
 
-use 5.12.5;
+use 5.8.9;
 use Moose;
 
 has minimum => ( is => 'ro', isa => 'Int', default => 4 );

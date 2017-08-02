@@ -118,11 +118,13 @@ sub encrypt {
     if $input !~ /[!-~]/ or $input =~ /\s/;
     carp __PACKAGE__ . " ignores the password with over 8bytes" unless $input =~ /^[!-~]{8}$/;
 
-    my $salt = '';
-    $salt .= $ascii[ rand @ascii ] until length $salt == 2;
+    do{
+        my $salt = '';
+        $salt .= $ascii[ rand @ascii ] until length $salt == 2;
 
-    my $encrypt;
-    do{ $encrypt = CORE::crypt( $input, $salt ) } until $encrypt =~ /^[.\/0-9A-Za-z]{13}$/;
+        my $encrypt;
+        $encrypt = CORE::crypt( $input, $salt )
+    } until $encrypt =~ /^[.\/0-9A-Za-z]{13}$/;
     return $encrypt;
 }
 

@@ -121,9 +121,9 @@ sub encrypt {
     my $salt = '';
     $salt .= $ascii[ rand @ascii ] until length $salt == 2;
 
-    my $encrypt = CORE::crypt( $input, $salt );
-    return $encrypt if $encrypt;
-    die;
+    my $encrypt;
+    do{ $encrypt = CORE::crypt( $input, $salt ) } until $encrypt;
+    return $encrypt;
 }
 
 =head3 generate($length)

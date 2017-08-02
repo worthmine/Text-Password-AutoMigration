@@ -150,7 +150,7 @@ sub generate {
         return ( $raw, $self->encrypt($raw) ) unless $self->readability();
     }while( $raw =~ /[0Oo1Il|!2Zz5sS\$6b9qCcKkUuVvWwXx.,:;~\-^'"`]/i );
 
-    return $raw, $self->encrypt($raw);
+    return ( $raw, $self->encrypt($raw) );
 }
 
 1;

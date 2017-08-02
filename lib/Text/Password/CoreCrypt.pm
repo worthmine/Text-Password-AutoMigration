@@ -121,9 +121,8 @@ sub encrypt {
     my $salt = '';
     $salt .= $ascii[ rand @ascii ] until length $salt == 2;
 
-    warn $salt;
     my $encrypt;
-    do{ $encrypt = CORE::crypt( $input, $salt ) } until $encrypt;
+    do{ $encrypt = CORE::crypt( $input, $salt ) } until $encrypt =~ /^[.\/0-9A-Za-z]{13}$/;
     return $encrypt;
 }
 

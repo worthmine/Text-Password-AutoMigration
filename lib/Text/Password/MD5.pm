@@ -47,7 +47,7 @@ Or you can set default strength for password with param 'readablity'.
 
 It must be a Boolen, default is 1.
 
-If it was set as 0, you can generate more strong passwords with generate()
+If it was set as 0, you can generate stronger passwords with generate()
 
  $pwd = Text::Pasword::AutoMiglation->new( readability => 0 );
  

@@ -7,4 +7,4 @@ on 'test' => sub {
 requires 'Moose', 2.2006;
 requires 'Crypt::Passwd::XS', 0.601;
 requires 'Crypt::PasswdMD5', 1.40;
-
+requires 'Digest::SHA', 0;

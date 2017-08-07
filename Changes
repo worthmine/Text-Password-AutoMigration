@@ -2,6 +2,9 @@ Revision history for Perl extension Text-Password-AutoMigration
 
 {{$NEXT}}
 
+0.04 2017-08-07T00:08:55Z
+ - add Moose.pm to cpanfile
+
 0.03 2017-08-05T02:23:05Z
  - fix the PODs
  - add dependencies

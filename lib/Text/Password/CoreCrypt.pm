@@ -130,7 +130,7 @@ sub encrypt {
 
 genarates pair of new password and it's hash
 
-not much readable characters(0Oo1Il|!2Zz5sS\$6b9qCcKkUuVvWwXx.,:;~\-^'"`) are fallen
+not much readable characters(0Oo1Il|!2Zz5sS$6b9qCcKkUuVvWwXx.,:;~-^'"`) are fallen
 unless $self->readability is 0.
 
 the length defaults to 8($self->default)

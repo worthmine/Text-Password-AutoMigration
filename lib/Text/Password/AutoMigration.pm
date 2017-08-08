@@ -61,9 +61,8 @@ If it was set as 0, you can generate stronger passwords with generate()
 
 It must be a Boolen, default is 1.
 
-This module is for Administrators who try to replace hashes in their DB
-
-If you've already done to replace them or start to make new Apps with this module,
+This module is for Administrators who try to replace hashes in their DB.
+However, if you've already done to replace them or start to make new Apps with this module,
 you can set param migrate as 0. 
 Then it will work a little faster to skip making alternative hashes.
 

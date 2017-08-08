@@ -31,7 +31,7 @@ All You have to do are those:
  
 1. use this module
 
-2. replace periodically the hashes in your DB.
+2. replace the hashes in your DB periodically.
 
 =head2 Constructor and initialization
 

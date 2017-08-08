@@ -27,7 +27,7 @@ It always generates the password with SHA512.
 And verifies Automatically the hash with
 B<CORE::crypt>, B<MD5>, B<SHA-1 by hex>, B<SHA-256> and of course B<SHA-512>.
 
-All You have to do are those:
+All you have to do are those:
  
 1. use this module
 
@@ -47,11 +47,13 @@ You can set default length with param 'default' like below
 
  $pwd = Text::Pasword::AutoMiglation->new( default => 12 );
 
+It must be an Int, defaults to 8.
+
 =item readablity
 
 Or you can set default strength for password with param 'readablity'.
 
-It must be a Boolen, default is 1.
+It must be a Boolen, defaults to 1.
 
 If it was set as 0, you can generate stronger passwords with generate()
 
@@ -59,7 +61,7 @@ If it was set as 0, you can generate stronger passwords with generate()
 
 =item migrate
 
-It must be a Boolen, default is 1.
+It must be a Boolen, defaults to 1.
 
 This module is for Administrators who try to replace hashes in their DB.
 However, if you've already done to replace them or start to make new Apps with this module,
@@ -108,7 +110,7 @@ override 'verify' => sub {
         return super();
     }elsif( $self->Text::Password::MD5::verify(@_) ){
         return $self->encrypt($input) if $self->migrate();
-        return $self->Text::Password::MD5::verify(@_);
+        return 1;
     }
     return undef;
 };

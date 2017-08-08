@@ -19,7 +19,7 @@ It always generates the password with SHA512.
 And verifies Automatically the hash with
 **CORE::crypt**, **MD5**, **SHA-1 by hex**, **SHA-256** and of course **SHA-512**.
 
-All You have to do are those:
+All you have to do are those:
 
 1\. use this module
 
@@ -37,11 +37,13 @@ No arguments are required. But you can set some parameters.
 
         $pwd = Text::Pasword::AutoMiglation->new( default => 12 );
 
+    It must be an Int, defaults to 8.
+
 - readablity
 
     Or you can set default strength for password with param 'readablity'.
 
-    It must be a Boolen, default is 1.
+    It must be a Boolen, defaults to 1.
 
     If it was set as 0, you can generate stronger passwords with generate()
 
@@ -49,7 +51,7 @@ No arguments are required. But you can set some parameters.
 
 - migrate
 
-    It must be a Boolen, default is 1.
+    It must be a Boolen, defaults to 1.
 
     This module is for Administrators who try to replace hashes in their DB.
     However, if you've already done to replace them or start to make new Apps with this module,

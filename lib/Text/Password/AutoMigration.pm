@@ -25,7 +25,7 @@ Text::Password::AutoMigration is the Module for lasy Administrators.
 It always generates the password with SHA512.
  
 And verifies Automatically the hash with
-B<CORE::crypt>, B<MD5>, B<SHA1 by hex>, B<SHA256> and of course B<SHA512>.
+B<CORE::crypt>, B<MD5>, B<SHA-1 by hex>, B<SHA-256> and of course B<SHA-512>.
 
 All You have to do are those:
  
@@ -63,21 +63,38 @@ If it was set as 0, you can generate stronger passwords with generate()
 
 =head3 verify( $raw, $hash )
 
-returns true if the verify is success
+returns true value if the verify is success
+
+Actually, the value is new hash with SHA-512 from $raw
+
+So you can replace hashes in your DB very easily like below
+ 
+ my $pwd = Text::Password::AutoMigration->new();
+ my $input = $req->body_parameters->{passwd};
+ my $hash = $pwd->verify( $input, $db{passwd} ); # returns hash with SHA-512, and it's true
+
+ if ($hash) { # you don't have to excute this every times 
+    $succeed = 1;
+    my $sth = $dbh->prepare('UPDATE DB SET passwd=? WHERE uid =?') or die $dbh->errstr;
+    $sth->excute( $hash, $req->body_parameters->{uid} ) or die $sth->errstr;
+ }
 
 =cut
 
 override 'verify' => sub {
     my $self = shift;
     my ( $input, $data ) = @_;
-    die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
+     die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
     if $input !~ /[!-~]/ or $input =~ /\s/;
 
-     return super() if
-       $data =~ /^\$6\$[!-~]{1,8}\$[!-~]{86}$/
-    or $data =~ /^\$5\$[!-~]{1,8}\$[!-~]{43}$/
-    or $data =~ /^[0-9a-f]{40}$/i;
-    return $self->Text::Password::MD5::verify(@_);
+    if (   $data =~ /^\$6\$[!-~]{1,8}\$[!-~]{86}$/
+        or $data =~ /^\$5\$[!-~]{1,8}\$[!-~]{43}$/
+        or $data =~ /^[0-9a-f]{40}$/i ) {
+        return $self->encrypt($input) if super();
+    }elsif( $self->Text::Password::MD5::verify(@_) ){
+        return $self->encrypt($input);
+    }
+    return undef;
 };
 
 =head3 nonce($length)

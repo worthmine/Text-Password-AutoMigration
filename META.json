@@ -70,9 +70,9 @@
    "version" : "0.05",
    "x_authority" : "cpan:{{WORTHMINE}}",
    "x_contributors" : [
-      "Yuki Yoshida <worthmine@gmail.com>",
       "Mohammad S Anwar <mohammad.anwar@yahoo.com>",
-      "Yuki Yoshida <worthmine@users.noreply.github.com>"
+      "Yuki Yoshida <worthmine@users.noreply.github.com>",
+      "Yuki Yoshida <worthmine@gmail.com>"
    ],
    "x_serialization_backend" : "JSON::PP version 2.93"
 }

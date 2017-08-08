@@ -17,7 +17,7 @@ Text::Password::AutoMigration is the Module for lasy Administrators.
 It always generates the password with SHA512.
 
 And verifies Automatically the hash with
-**CORE::crypt**, **MD5**, **SHA1 by hex**, **SHA256** and of course **SHA512**.
+**CORE::crypt**, **MD5**, **SHA-1 by hex**, **SHA-256** and of course **SHA-512**.
 
 All You have to do are those:
 
@@ -52,7 +52,21 @@ No arguments are required. But you can set some parameters.
 
 ### verify( $raw, $hash )
 
-returns true if the verify is success
+returns true value if the verify is success
+
+Actually, the value is new hash with SHA-512 from $raw
+
+So you can replace hashes in your DB very easily like below
+
+    my $pwd = Text::Password::AutoMigration->new();
+    my $input = $req->body_parameters->{passwd};
+    my $hash = $pwd->verify( $input, $db{passwd} ); # returns hash with SHA-512, and it's true
+
+    if ($hash) { # you don't have to excute this every times 
+       $succeed = 1;
+       my $sth = $dbh->prepare('UPDATE DB SET passwd=? WHERE uid =?') or die $dbh->errstr;
+       $sth->excute( $hash, $req->body_parameters->{uid} ) or die $sth->errstr;
+    }
 
 ### nonce($length)
 
@@ -70,7 +84,7 @@ salt will be made automatically
 
 genarates pair of new password and it's hash
 
-not much readable characters(0Oo1Il|!2Zz5sS\\$6b9qCcKkUuVvWwXx.,:;~\\-^'"\`) are fallen
+not much readable characters(0Oo1Il|!2Zz5sS$6b9qCcKkUuVvWwXx.,:;~-^'"\`) are fallen
 unless $self->readability is 0.
 
 the length defaults to 8($self->default)

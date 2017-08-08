@@ -56,7 +56,21 @@ It must be a Boolen, default is 1.
 If it was set as 0, you can generate stronger passwords with generate()
 
  $pwd = Text::Pasword::AutoMiglation->new( readability => 0 );
- 
+
+=item migrate
+
+It must be a Boolen, default is 1.
+
+This module is for Administrators who try to replace hashes in their DB
+
+If you've already done to replace them or start to make new Apps with this module,
+you can set param migrate as 0. 
+Then it will work a little faster to skip making alternative hashes.
+
+=cut
+
+has migrate => ( is => 'rw', isa => 'Bool', default => 1 );
+
 =back
 
 =head2 Methods and Subroutines
@@ -73,7 +87,7 @@ So you can replace hashes in your DB very easily like below
  my $input = $req->body_parameters->{passwd};
  my $hash = $pwd->verify( $input, $db{passwd} ); # returns hash with SHA-512, and it's true
 
- if ($hash) { # you don't have to excute this every times 
+ if ($hash) { # you don't have to excute this every times
     $succeed = 1;
     my $sth = $dbh->prepare('UPDATE DB SET passwd=? WHERE uid =?') or die $dbh->errstr;
     $sth->excute( $hash, $req->body_parameters->{uid} ) or die $sth->errstr;
@@ -89,10 +103,13 @@ override 'verify' => sub {
 
     if (   $data =~ /^\$6\$[!-~]{1,8}\$[!-~]{86}$/
         or $data =~ /^\$5\$[!-~]{1,8}\$[!-~]{43}$/
-        or $data =~ /^[0-9a-f]{40}$/i ) {
-        return $self->encrypt($input) if super();
+        or $data =~ /^[0-9a-f]{40}$/i )
+    {
+        return $self->encrypt($input) if super() and $self->migrate();
+        return super();
     }elsif( $self->Text::Password::MD5::verify(@_) ){
-        return $self->encrypt($input);
+        return $self->encrypt($input) if $self->migrate();
+        return $self->Text::Password::MD5::verify(@_);
     }
     return undef;
 };
@@ -131,9 +148,9 @@ __END__
 
 =over
 
-=item L<github|https://github.com/worthmine/Text-Password-AutoMigration>
+=item L<GitHub|https://github.com/worthmine/Text-Password-AutoMigration>
 
-=item L<cpan|http://search.cpan.org/perldoc?Text%3A%3APassword%3A%3AAutoMigration>
+=item L<CPAN|http://search.cpan.org/perldoc?Text%3A%3APassword%3A%3AAutoMigration>
 
 =back
 

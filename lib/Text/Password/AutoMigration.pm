@@ -53,7 +53,7 @@ It must be an Int, defaults to 8.
 
 Or you can set default strength for password with param 'readablity'.
 
-It must be a Boolen, defaults to 1.
+It must be a Boolean, defaults to 1.
 
 If it was set as 0, you can generate stronger passwords with generate()
 
@@ -61,7 +61,7 @@ If it was set as 0, you can generate stronger passwords with generate()
 
 =item migrate
 
-It must be a Boolen, defaults to 1.
+It must be a Boolean, defaults to 1.
 
 This module is for Administrators who try to replace hashes in their DB.
 However, if you've already done to replace them or start to make new Apps with this module,
@@ -88,7 +88,7 @@ So you can replace hashes in your DB very easily like below
  my $input = $req->body_parameters->{passwd};
  my $hash = $pwd->verify( $input, $db{passwd} ); # returns hash with SHA-512, and it's true
 
- if ($hash) { # you don't have to excute this every times
+ if ($hash) { # you don't have to excute this every time
     $succeed = 1;
     my $sth = $dbh->prepare('UPDATE DB SET passwd=? WHERE uid =?') or die $dbh->errstr;
     $sth->excute( $hash, $req->body_parameters->{uid} ) or die $sth->errstr;
@@ -131,7 +131,7 @@ salt will be made automatically
 
 genarates pair of new password and it's hash
 
-not much readable characters(0Oo1Il|!2Zz5sS$6b9qCcKkUuVvWwXx.,:;~-^'"`) are fallen
+less readable characters(0Oo1Il|!2Zz5sS$6b9qCcKkUuVvWwXx.,:;~-^'"`) are forbidden
 unless $self->readability is 0.
 
 the length defaults to 8($self->default)

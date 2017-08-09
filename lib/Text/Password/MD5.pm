@@ -45,7 +45,7 @@ You can set default length with param 'default' like below
 
 Or you can set default strength for password with param 'readablity'.
 
-It must be a Boolen, default is 1.
+It must be a boolean, default is 1.
 
 If it was set as 0, you can generate stronger passwords with generate()
 
@@ -107,7 +107,7 @@ override 'encrypt' => sub {
 
 genarates pair of new password and it's hash
 
-not much readable characters(0Oo1Il|!2Zz5sS$6b9qCcKkUuVvWwXx.,:;~-^'"`) are fallen
+less readable characters(0Oo1Il|!2Zz5sS$6b9qCcKkUuVvWwXx.,:;~-^'"`) are forbidden
 unless $self->readability is 0.
 
 the length defaults to 8($self->default)

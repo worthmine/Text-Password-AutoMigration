@@ -44,7 +44,7 @@ note('generated raw password is ' . $raw );
 
 is length($raw), 12, "The length is 12";                                    # 4
 
-$passwd->migrate(0); # force to return Boolen with verify()
+$passwd->migrate(0); # force to return Boolean with verify()
 $flag = $passwd->verify( $raw, $hash );
 is $flag, 1, "verify: " . $ok[$flag];                                       # 5
 

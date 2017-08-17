@@ -10,6 +10,8 @@ extends 'Text::Password::SHA';
 
 Text::Password::AutoMigration - generate and verify Password with any contexts
 
+=for html <a href="https://travis-ci.org/worthmine/Text-Password-AutoMigration"><img src="https://travis-ci.org/worthmine/Text-Password-AutoMigration.svg?branch=master"></a>
+
 =head1 SYNOPSIS
 
  my $pwd = Text::Password::AutoMigration->new();

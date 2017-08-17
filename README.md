@@ -2,6 +2,10 @@
 
 Text::Password::AutoMigration - generate and verify Password with any contexts
 
+<div>
+    <a href="https://travis-ci.org/worthmine/Text-Password-AutoMigration"><img src="https://travis-ci.org/worthmine/Text-Password-AutoMigration.svg?branch=master"></a>
+</div>
+
 # SYNOPSIS
 
     my $pwd = Text::Password::AutoMigration->new();

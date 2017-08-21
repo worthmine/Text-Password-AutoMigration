@@ -96,6 +96,10 @@ So you can replace hashes in your DB very easily like below:
     $sth->excute( $hash, $req->body_parameters->{uid} ) or die $sth->errstr;
  }
 
+The new hash length are at least 98. So you have to change your DB like below:
+
+ ALTER TABLE User CHANGE paswwd passwd VARCHAR(98);
+
 =cut
 
 override 'verify' => sub {

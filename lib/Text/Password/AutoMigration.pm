@@ -139,6 +139,11 @@ less readable characters(0Oo1Il|!2Zz5sS$6b9qCcKkUuVvWwXx.,:;~-^'"`) are forbidde
 unless $self->readability is 0.
 
 the length defaults to 8($self->default).
+
+B<DON'T TRUST> this method.
+According to L<Password expert says he was wrong|https://www.usatoday.com/story/news/nation-now/2017/08/09/password-expert-says-he-wrong-numbers-capital-letters-and-symbols-useless/552013001/>,
+it's not a safe way. So, I will rewrite this method as soon as I find the better way.
+
  
 =cut
 
@@ -156,6 +161,9 @@ __END__
 =item L<GitHub|https://github.com/worthmine/Text-Password-AutoMigration>
 
 =item L<CPAN|http://search.cpan.org/perldoc?Text%3A%3APassword%3A%3AAutoMigration>
+
+=item L<https://shattered.io/>
+
 
 =back
 

@@ -1,51 +1,45 @@
 use strict;
 use warnings;
 
-use Test::More tests => 5;
+use Test::More tests => 7;
 
 use lib 'lib';
 
-use Text::Password::AutoMigration;
-my $passwd = Text::Password::AutoMigration->new();
-my $passwdMD5 = Text::Password::MD5->new();
-my $passwdCC = Text::Password::CoreCrypt->new();
+use_ok 'Text::Password::AutoMigration';                                 # 1
+my $pwd = new_ok('Text::Password::AutoMigration');                      # 2
+my $pwd_MD5 = Text::Password::MD5->new();
+my $pwd_CC = Text::Password::CoreCrypt->new();
 
 my @ok = qw( fail ok );
 my ( $raw, $hash, $flag );
 
-( $raw, $hash ) = $passwdCC->generate();
-note('with CORE::Crypt');
-note('generated raw password is ' . $raw );
-note('generated hash strings is ' . $hash );
+( $raw, $hash ) = $pwd_CC->generate();
+note('generated hash strings with CORE::Crypt is ' . $hash );
 
-$flag = $passwd->verify( $raw, $hash );
-like $flag, qr/^\$6\$[!-~]{1,8}\$[!-~]{86}$/, "verify: " . $ok[$flag ne '']; # 1
+$flag = $pwd->verify( $raw, $hash );
+ like $flag, qr/^\$6\$[!-~]{1,8}\$[!-~]{86}$/,                          # 3
+"verify: " . $ok[ $flag ne '' ];
 
-( $raw, $hash ) = $passwdMD5->generate();
-note('with MD5');
-note('generated raw password is ' . $raw );
-note('generated hash strings is ' . $hash );
+( $raw, $hash ) = $pwd_MD5->generate();
+note('generated hash strings with MD5 is ' . $hash );
 
-$flag = $passwd->verify( $raw, $hash );
-like $flag, qr/^\$6\$[!-~]{1,8}\$[!-~]{86}$/, "verify: " . $ok[$flag ne '']; # 2
+$flag = $pwd->verify( $raw, $hash );
+ like $flag, qr/^\$6\$[!-~]{1,8}\$[!-~]{86}$/,                          # 4
+"verify: " . $ok[ $flag ne '' ];
 
-( $raw, $hash ) = $passwd->generate();
-note('with SHA');
-note('generated raw password is ' . $raw );
-note('generated hash strings is ' . $hash );
+( $raw, $hash ) = $pwd->generate();
+note('generated hash strings with SHA512 is ' . $hash );
 
-$flag = $passwd->verify( $raw, $hash );
-like $flag, qr/^\$6\$[!-~]{1,8}\$[!-~]{86}$/, "verify: " . $ok[$flag ne '']; # 3
+$flag = $pwd->verify( $raw, $hash );
+ like $flag, qr/^\$6\$[!-~]{1,8}\$[!-~]{86}$/,                          # 5
+"verify: " . $ok[ $flag ne '' ];
 
-$passwd->default(12);
-( $raw, $hash ) = $passwd->generate();
-note('12 length raw password');
-note('generated raw password is ' . $raw );
+$pwd->default(12);
+( $raw, $hash ) = $pwd->generate();
+is length($raw), 12, "succeed to generate raw password with 12 length"; # 6
 
-is length($raw), 12, "The length is 12";                                    # 4
-
-$passwd->migrate(0); # force to return Boolean with verify()
-$flag = $passwd->verify( $raw, $hash );
-is $flag, 1, "verify: " . $ok[$flag];                                       # 5
+$pwd->migrate(0); # force to return Boolean with verify()
+$flag = $pwd->verify( $raw, $hash );
+is $flag, 1, "verify: " . $ok[$flag];                                   # 7
 
 done_testing();

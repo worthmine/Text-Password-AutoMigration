@@ -10,8 +10,6 @@ extends 'Text::Password::SHA';
 
 Text::Password::AutoMigration - generate and verify Password with any contexts
 
-=for html <a href="https://travis-ci.org/worthmine/Text-Password-AutoMigration"><img src="https://travis-ci.org/worthmine/Text-Password-AutoMigration.svg?branch=master"></a>
-
 =head1 SYNOPSIS
 
  my $pwd = Text::Password::AutoMigration->new();
@@ -110,8 +108,8 @@ override 'verify' => sub {
 
     if (   $data =~ /^\$6\$[!-~]{1,8}\$[!-~]{86}$/
         or $data =~ /^\$5\$[!-~]{1,8}\$[!-~]{43}$/
-        or $data =~ /^[0-9a-f]{40}$/i )
-    {
+        or $data =~ /^[0-9a-f]{40}$/i
+    ) {
         return $self->encrypt($input) if super() and $self->migrate();
         return super();
     }elsif( $self->Text::Password::MD5::verify(@_) ){
@@ -123,7 +121,7 @@ override 'verify' => sub {
 
 =head3 nonce($length)
 
-generates the strings with enough strength.
+generates the random strings with enough strength.
 
 the length defaults to 8($self->default).
 

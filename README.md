@@ -1,10 +1,7 @@
+[![Build Status](https://travis-ci.org/worthmine/Text-Password-AutoMigration.svg?branch=master)](https://travis-ci.org/worthmine/Text-Password-AutoMigration)
 # NAME
 
 Text::Password::AutoMigration - generate and verify Password with any contexts
-
-<div>
-    <a href="https://travis-ci.org/worthmine/Text-Password-AutoMigration"><img src="https://travis-ci.org/worthmine/Text-Password-AutoMigration.svg?branch=master"></a>
-</div>
 
 # SYNOPSIS
 
@@ -88,7 +85,7 @@ New hash length is at least 98. So you have to change your DB like below:
 
 ### nonce($length)
 
-generates the strings with enough strength.
+generates the random strings with enough strength.
 
 the length defaults to 8($self->default).
 

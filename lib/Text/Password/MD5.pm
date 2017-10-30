@@ -76,7 +76,7 @@ override 'verify' => sub {
 
 =head3 nonce($length)
 
-generates the strings with enough strength.
+generates the random strings with enough strength.
 
 the length defaults to 8($self->default).
 

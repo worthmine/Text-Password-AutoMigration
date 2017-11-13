@@ -150,8 +150,8 @@ sub generate {
     my $min = $self->minimum();
 
     croak "unvalid length was set" unless $length =~ /^\d+$/;
-    croak ref($self) . "::generate requires list context." unless wantarray;
-    croak ref($self) . "::generate requires at least $min length." if $length < $min;
+    croak ref($self) . "::generate requires list context" unless wantarray;
+    croak ref($self) . "::generate requires at least $min length" if $length < $min;
 
     my $raw;
     do {	# redo unless it gets enough readability

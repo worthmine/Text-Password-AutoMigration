@@ -63,7 +63,7 @@ returns true if the verification succeeds.
 override 'verify' => sub {
     my $self = shift;
     my ( $input, $data ) = @_;
-    die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
+     die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
     if $input !~ /[!-~]/ or $input =~ /\s/;
 
     if ( $data =~ /^\$6\$([!-~]{1,8})\$[!-~]{86}$/ ) {
@@ -98,9 +98,8 @@ override 'encrypt' => sub {
     my $input = shift;
     my $min = $self->minimum();
     croak __PACKAGE__ ." requires at least $min length" if length $input < $min;
-    die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
+     die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
     if $input !~ /[!-~]/ or $input =~ /\s/;
-
 
     my $salt = shift || $self->nonce();
     return Crypt::Passwd::XS::unix_sha512_crypt( $input, $salt );

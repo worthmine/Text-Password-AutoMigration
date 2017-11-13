@@ -1,5 +1,5 @@
 package Text::Password::MD5;
-our $VERSION = "0.09";
+our $VERSION = "0.10";
 
 use Moose;
 extends 'Text::Password::CoreCrypt';

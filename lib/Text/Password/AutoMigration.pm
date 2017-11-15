@@ -1,5 +1,5 @@
 package Text::Password::AutoMigration;
-our $VERSION = "0.10";
+our $VERSION = "0.11";
 
 use Moose;
 extends 'Text::Password::SHA';

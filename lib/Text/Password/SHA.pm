@@ -101,7 +101,9 @@ override 'encrypt' => sub {
      die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
     if $input !~ /[!-~]/ or $input =~ /\s/;
 
-    my $salt = shift || $self->nonce();
+    my $salt;
+    do{ $salt = shift || $self->nonce() } while( $salt =~ /\$/ );
+
     return Crypt::Passwd::XS::unix_sha512_crypt( $input, $salt );
 };
 

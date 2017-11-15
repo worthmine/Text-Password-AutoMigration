@@ -20,7 +20,7 @@ no Moose;
 
 use Carp;
 my @ascii = (
-    qw| ! " # $ % & ' ( ) * + , - . / |,
+    '!', '"', '#', qw| $ % & ' ( ) * + |, ',', qw| - . / |,
     0 .. 9, qw( : ; < = > ? @ ),
     'A'..'Z', qw( [ \ ] ^ _ ` ), # to void syntax highlighting -> `
     'a'..'z', qw( { | } ~ ),

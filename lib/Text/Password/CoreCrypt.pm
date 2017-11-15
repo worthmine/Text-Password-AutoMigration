@@ -19,7 +19,12 @@ __PACKAGE__->meta->make_immutable;
 no Moose;
 
 use Carp;
-my @ascii = ( '!' .. '/', 0 .. 9, ':' .. '@', 'A'..'Z', '[' .. '`', 'a'..'z', '{' .. '~' );
+my @ascii = (
+    qw| ! " # $ % & ' ( ) * + , - . / |,
+    0 .. 9, qw( : ; < = > ? @ ),
+    'A'..'Z', qw( [ \ ] ^ _ ` ), # to void syntax highlighting -> `
+    'a'..'z', qw( { | } ~ ),
+);
 
 =encoding utf-8
 

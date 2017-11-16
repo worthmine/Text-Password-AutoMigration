@@ -101,7 +101,9 @@ override 'encrypt' => sub {
      carp "warning: too many string lengths for salt. unix_md5_crypt() ignores more than 8"
     if $salt and length($salt) > 8;
 
-    return unix_md5_crypt( $input, $salt );
+    my $pwd;
+    do{ $pwd = unix_md5_crypt( $input, $salt ) } until( $pwd =~ /^\$1\$[!-~]{1,8}\$[!-~]{22}$/ );
+    return $pwd;
 };
 
 =head3 generate($length)

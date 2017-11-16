@@ -94,7 +94,7 @@ override 'encrypt' => sub {
     my $min = $self->minimum();
     croak __PACKAGE__ ." requires at least $min length" if length $input < $min;
      die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
-    if $input !~ /[!-~]/ or $input =~ /\s/;
+    if $input =~ /[^!-~]/ or $input =~ /\s/;
 
     my $hash;
      do{ $hash = unix_md5_crypt( $input, $self->nonce(8) ) }

@@ -104,7 +104,7 @@ override 'verify' => sub {
     my $self = shift;
     my ( $input, $data ) = @_;
      die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
-    if $input !~ /[!-~]/ or $input =~ /\s/;
+    if $input =~ /[^!-~]/ or $input =~ /\s/;
 
     my $new;
     if (   $data =~ /^\$6\$[!-~]{1,8}\$[!-~]{86}$/

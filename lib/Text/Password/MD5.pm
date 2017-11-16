@@ -96,14 +96,10 @@ override 'encrypt' => sub {
      die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
     if $input !~ /[!-~]/ or $input =~ /\s/;
 
-    my $salt = shift || $self->nonce();
-    carp "warning: short lengths salt is set. you don't have to" if length($salt) < 8;
-     carp "warning: too many string lengths for salt. unix_md5_crypt() ignores more than 8"
-    if $salt and length($salt) > 8;
-
-    my $pwd;
-    do{ $pwd = unix_md5_crypt( $input, $salt ) } until( $pwd =~ /^\$1\$[!-~]{1,8}\$[!-~]{22}$/ );
-    return $pwd;
+    my $hash;
+     do{ $hash = unix_md5_crypt( $input, $self->nonce(8) ) }
+    until( $hash =~ /^\$1\$[!-~]{1,8}\$[!-~]{22}$/ );
+    return $hash;
 };
 
 =head3 generate($length)

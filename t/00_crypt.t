@@ -2,6 +2,7 @@ use strict;
 use warnings;
 
 use Test::More tests => 9;
+use Devel::AssertOS qw(-OpenBSD);
 
 use lib 'lib';
 

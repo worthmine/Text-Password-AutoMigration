@@ -74,6 +74,9 @@ override 'verify' => sub {
     return $data eq unix_md5_crypt( $input, $data );
 };
 
+__PACKAGE__->meta->make_immutable;
+no Moose;
+
 =head3 nonce($length)
 
 generates the random strings with enough strength.
@@ -88,7 +91,7 @@ salt will be made automatically.
 
 =cut
 
-override 'encrypt' => sub {
+sub encrypt {
     my $self = shift;
     my $input = shift;
     my $min = $self->minimum();
@@ -97,7 +100,7 @@ override 'encrypt' => sub {
     if $input =~ /[^!-~]/ or $input =~ /\s/;
 
     return unix_md5_crypt( $input, $self->_salt() );
-};
+}
 
 =head3 generate($length)
 
@@ -109,9 +112,6 @@ unless $self->readability is 0.
 the length defaults to 8($self->default).
  
 =cut
-
-__PACKAGE__->meta->make_immutable;
-no Moose;
 
 sub _salt {
     my $self = shift;

@@ -96,9 +96,7 @@ override 'encrypt' => sub {
      die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
     if $input =~ /[^!-~]/ or $input =~ /\s/;
 
-    my $salt = '';
-    do { $salt = $self->nonce(8) } while $salt =~ /\$/;
-    return unix_md5_crypt( $input, $salt );
+    return unix_md5_crypt( $input, $self->_salt() );
 };
 
 =head3 generate($length)
@@ -114,6 +112,14 @@ the length defaults to 8($self->default).
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
+
+sub _salt {
+    my $self = shift;
+
+    my $salt = '';
+    do { $salt = $self->nonce(8) } while $salt =~ /\$/;
+    return $salt;
+}
 
 1;
 

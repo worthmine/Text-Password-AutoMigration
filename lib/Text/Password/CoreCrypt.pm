@@ -130,11 +130,11 @@ sub encrypt {
     if $input =~ /[^!-~]/ or $input =~ /\s/;
     carp __PACKAGE__ . " ignores the password with over 8bytes" unless $input =~ /^[!-~]{8}$/;
 
-    my @seeds = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9, '.', '/' );
-    my $salt = '';
-    $salt .= $seeds[ rand @seeds ] until length $salt == 2;
+#    my @seeds = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9, '.', '/' );
+#    my $salt = '';
+#    $salt .= $seeds[ rand @seeds ] until length $salt == 2;
 
-    return CORE::crypt( $input, $salt );
+    return CORE::crypt( $input, $self->_salt() );
 }
 
 =head3 generate($length)
@@ -164,6 +164,15 @@ sub generate {
     }while( $raw =~ /[0Oo1Il|!2Zz5sS\$6b9qCcKkUuVvWwXx.,:;~\-^'"`]/i );
 
     return $raw, $self->encrypt($raw);
+}
+
+sub _salt {
+    my $self = shift;
+
+    my @seeds = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9, '.', '/' );
+    my $salt = '';
+    $salt .= $seeds[ rand @seeds ] until length $salt == 2;
+    return $salt;
 }
 
 1;

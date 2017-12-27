@@ -96,10 +96,9 @@ override 'encrypt' => sub {
      die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
     if $input =~ /[^!-~]/ or $input =~ /\s/;
 
-    my $hash;
-     do{ $hash = unix_md5_crypt( $input, $self->nonce(8) ) }
-    until( $hash =~ /^\$1\$[!-~]{1,8}\$[!-~]{22}$/ );
-    return $hash;
+    my $salt = '';
+    do { $salt = $self->nonce(8) } while $salt =~ /\$/;
+    return unix_md5_crypt( $input, $salt );
 };
 
 =head3 generate($length)

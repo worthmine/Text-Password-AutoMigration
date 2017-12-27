@@ -2,7 +2,6 @@ use strict;
 use warnings;
 
 use Test::More tests => 5;
-use Devel::AssertOS qw(-OpenBSD);
 
 use lib 'lib';
 
@@ -15,8 +14,8 @@ my ( $raw, $hash ) = $pwd->generate();
 
 
 subtest "generate with unix_md5_crypt" => sub {                         # 4
-    plan tests => 100;
-    foreach ( 1..50 ) {
+    plan tests => 200;
+    foreach ( 1..100 ) {
         ( $raw, $hash ) = $pwd->generate();
          like $hash,                                                    # 4.1
          qr/^\$1\$[!-~]{1,8}\$[!-~]{22}$/, "succeed to generated hash with MD5";

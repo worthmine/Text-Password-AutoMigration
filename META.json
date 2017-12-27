@@ -51,7 +51,6 @@
       },
       "test" : {
          "requires" : {
-            "Devel::AssertOS" : "1.21",
             "Test::More" : "0.98"
          }
       }

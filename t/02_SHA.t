@@ -10,7 +10,7 @@ my $pwd = new_ok('Text::Password::SHA');                                # 2
 
 my ( $raw, $hash ) = $pwd->generate();
  like $pwd->encrypt($raw), qr/^\$6\$([!-~]{1,8})\$[!-~]{86}$/,          # 3
-"succeed to encrypt  with SHA512 from raw password";
+"succeed to encrypt with SHA512 from raw password";
 is $pwd->verify( $raw, $hash ), 1, "succeed to verify with SHA512";     # 4
 
  is $pwd->verify( $pwd->nonce(), $hash ), '',                           # 5

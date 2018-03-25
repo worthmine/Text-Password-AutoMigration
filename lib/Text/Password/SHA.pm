@@ -67,12 +67,11 @@ sub verify {
     my $self = shift;
     my ( $input, $data ) = @_;
      die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
-    if length $input and $input !~ /[!-~]/ or $input =~ /[\t\n\x0B\f\r]/;
+    if length $input and $input !~ /[ -~]/;
 
     if ( $data =~ /^\$6\$([!-~]{1,8})\$[!-~]{86}$/ ) {
         my $salt = $1;
         return $data eq Crypt::Passwd::XS::unix_sha512_crypt( $input, $salt );
-
     }elsif( $data =~ /^\$5\$([!-~]{1,8})\$[!-~]{43}$/ ) {
         my $salt = $1;
         return $data eq Crypt::Passwd::XS::unix_sha256_crypt( $input, $salt );
@@ -101,8 +100,7 @@ sub encrypt {
     my $input = shift;
     my $min = $self->minimum();
     croak __PACKAGE__ ." requires at least $min length" if length $input < $min;
-     die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
-    if $input =~ /[^!-~]/ or $input =~ /\s/;
+    croak __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n" if $input !~ /[ -~]/;
 
     return Crypt::Passwd::XS::unix_sha512_crypt( $input, $self->_salt() );
 }

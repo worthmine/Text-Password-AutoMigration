@@ -104,7 +104,7 @@ override 'verify' => sub {
     my $self = shift;
     my ( $input, $data ) = @_;
      die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
-    if $input =~ /[^!-~]/ or $input =~ /\s/;
+    if $input =~ /[^!-~]/ or $input =~ /[\t\n\x0B\f\r]/;
 
     if ( super() ){
         return $self->encrypt($input) if $self->migrate();

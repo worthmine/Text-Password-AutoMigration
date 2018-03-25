@@ -83,8 +83,8 @@ returns true if the verification succeeds.
 sub verify {
     my $self = shift;
     my ( $input, $data ) = @_;
-    die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
-    if length $input and $input !~ /[!-~]/ or $input =~ /\s/;
+     die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
+    if length $input and $input !~ /[!-~]/ or $input =~ /[\t\n\x0B\f\r]/;
     croak "CORE::crypt makes 13bytes hash strings. Your data must be wrong."
     if $data !~ /^[!-~]{13}$/;
 

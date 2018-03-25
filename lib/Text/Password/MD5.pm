@@ -67,7 +67,7 @@ override 'verify' => sub {
     return super() if $data =~ /^[!-~]{13}$/; # with crypt in Perl
 
      die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
-    if length $input and $input !~ /[!-~]/ or $input =~ /\s/;
+    if length $input and $input !~ /[!-~]/ or $input =~ /[\t\n\x0B\f\r]/;
      croak "Crypt::PasswdMD5 makes 34bytes hash strings. Your data must be wrong"
     if $data !~ /^\$1\$[!-~]{1,8}\$[!-~]{22}$/;
 

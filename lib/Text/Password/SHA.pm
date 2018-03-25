@@ -67,7 +67,7 @@ sub verify {
     my $self = shift;
     my ( $input, $data ) = @_;
      die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
-    if length $input and $input !~ /[!-~]/ or $input =~ /\s/;
+    if length $input and $input !~ /[!-~]/ or $input =~ /[\t\n\x0B\f\r]/;
 
     if ( $data =~ /^\$6\$([!-~]{1,8})\$[!-~]{86}$/ ) {
         my $salt = $1;

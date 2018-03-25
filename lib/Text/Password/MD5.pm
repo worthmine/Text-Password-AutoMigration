@@ -65,12 +65,6 @@ override 'verify' => sub {
     my $self = shift;
     my ( $input, $data ) = @_;
     return super() if $data =~ /^[!-~]{13}$/; # with crypt in Perl
-
-     croak  __PACKAGE__ . " doesn't allow any Wide Characters or white spaces\n"
-    if length $input and $input !~ /[ -~]/;
-     croak "Crypt::PasswdMD5 makes 34bytes hash strings. Your data must be wrong"
-    if $data !~ /^\$1\$[!-~]{1,8}\$[!-~]{22}$/;
-
     return $data eq unix_md5_crypt( $input, $data );
 };
 
@@ -96,8 +90,7 @@ sub encrypt {
     my $input = shift;
     my $min = $self->minimum();
     croak __PACKAGE__ ." requires at least $min length" if length $input < $min;
-     croak __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
-    if $input !~ /[ -~]/;
+    croak __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n" if $input !~ /[ -~]/;
 
     return unix_md5_crypt( $input, $self->_salt() );
 }

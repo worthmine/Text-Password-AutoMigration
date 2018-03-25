@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 9;
+use Test::More tests => 8;
 
 use lib 'lib';
 
@@ -41,14 +41,9 @@ subtest "generate unreadable strings" => sub {                          # 7
     is $pwd->verify( $raw, $hash ), 1, "succeed to verify";             # 7.3
 };
 
-eval{ $pwd->verify( $raw, '$1$l1PMyqG!$mNPUHQnly7oLJjt/jb/m/.' ) };
- like $@,                                                               # 8
- qr/^CORE::crypt makes 13bytes hash strings\. Your data must be wrong\./i,
-"fail to verify with invalid strings";
-
 ( $raw, $hash ) = eval{ $pwd->generate(3) };
  like $@ ,
  qr/^Text::Password::CoreCrypt::generate requires at least 4 length/i,
-"fail to make too short password";                                      # 9
+"fail to make too short password";                                      # 8
 
 done_testing();

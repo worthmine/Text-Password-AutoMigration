@@ -66,18 +66,12 @@ returns true if the verification succeeds.
 sub verify {
     my $self = shift;
     my ( $input, $data ) = @_;
-     die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
-    if length $input and $input !~ /[ -~]/;
 
-    if ( $data =~ /^\$6\$([!-~]{1,8})\$[!-~]{86}$/ ) {
-        my $salt = $1;
-        return $data eq Crypt::Passwd::XS::unix_sha512_crypt( $input, $salt );
-    }elsif( $data =~ /^\$5\$([!-~]{1,8})\$[!-~]{43}$/ ) {
-        my $salt = $1;
-        return $data eq Crypt::Passwd::XS::unix_sha256_crypt( $input, $salt );
-    }elsif( $data =~ /^[0-9a-f]{40}$/i ) {
-        return $data eq sha1_hex($input);
-    }
+     return $data eq Crypt::Passwd::XS::unix_sha512_crypt( $input, $data )
+    if $data =~ /^\$6\$[!-~]{1,8}\$[!-~]{86}$/;
+     return $data eq Crypt::Passwd::XS::unix_sha256_crypt( $input, $data )
+    if $data =~ /^\$5\$([!-~]{1,8})\$[!-~]{43}$/;
+    return $data eq sha1_hex($input) if $data =~ /^[0-9a-f]{40}$/i;
     return 0;
 }
 

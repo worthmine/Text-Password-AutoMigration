@@ -83,11 +83,7 @@ returns true if the verification succeeds.
 sub verify {
     my $self = shift;
     my ( $input, $data ) = @_;
-     die __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n"
-    if length $input and $input !~ /[ -~]/;
-    croak "CORE::crypt makes 13bytes hash strings. Your data must be wrong."
-    if $data !~ /^[!-~]{13}$/;
-
+    warn "CORE::crypt makes 13bytes hash strings. Your data must be wrong: $data" if $data !~ /^[!-~]{13}$/;
     return $data eq CORE::crypt( $input, $data );
 }
 
@@ -125,9 +121,9 @@ sub encrypt {
     my $self = shift;
     my $input = shift;
     my $min = $self->minimum();
-    croak __PACKAGE__ ." requires at least $min length" if length $input < $min;
-    croak __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n" if $input !~ /[ -~]/;
-    carp __PACKAGE__ . " ignores the password with over 8bytes" unless $input =~ /^[!-~]{8}$/;
+    carp __PACKAGE__ . " requires at least $min length" if length $input < $min;
+    carp __PACKAGE__ . " doesn't allow any Wide Characters or white spaces\n" if $input !~ /[ -~]/;
+    carp __PACKAGE__  . " ignores the password with over 8bytes" unless $input =~ /^[!-~]{8}$/;
 
     return CORE::crypt( $input, $self->_salt() );
 }

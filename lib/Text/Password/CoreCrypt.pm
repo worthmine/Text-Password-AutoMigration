@@ -123,7 +123,7 @@ sub encrypt {
     my $min = $self->minimum();
     carp __PACKAGE__ . " requires at least $min length" if length $input < $min;
     carp __PACKAGE__  . " ignores the password with over 8 bytes" if length $input > 8;
-    carp __PACKAGE__ . " doesn't allow any Wide Characters or white spaces\n" if $input !~ /[ -~]/;
+    carp __PACKAGE__ . " doesn't allow any Wide Characters or white spaces\n" if $input =~ /[^ -~]/;
 
     return CORE::crypt( $input, $self->_salt() );
 }

@@ -10,7 +10,7 @@ has minimum => ( is => 'ro', isa => 'Int', default => 4 );
 subtype 'Default',
     as 'Int',
     where { $_ >=  4 },
-    message {"default must be larger than 4"};
+    message {"The Default must be 4 or higher."};
 has default => ( is => 'rw', isa => 'Default', default => 8 );
 
 has readability => ( is => 'rw', isa => 'Bool', default => 1 );
@@ -98,7 +98,7 @@ the length defaults to 8($self->default).
 sub nonce {
     my $self = shift;
     my $length = shift || 8;
-    croak "unvalid length for nonce was set" unless $length =~ /^\d+$/ and $length >= 4;
+    croak "Unvalid length for nonce was set" unless $length =~ /^\d+$/ and $length >= 4;
 
     my $n;
     do {	# redo unless it gets enough strength
@@ -122,8 +122,8 @@ sub encrypt {
     my $input = shift;
     my $min = $self->minimum();
     carp __PACKAGE__ . " requires at least $min length" if length $input < $min;
+    carp __PACKAGE__  . " ignores the password with over 8 bytes" if length $input > 8;
     carp __PACKAGE__ . " doesn't allow any Wide Characters or white spaces\n" if $input !~ /[ -~]/;
-    carp __PACKAGE__  . " ignores the password with over 8bytes" unless $input =~ /^[!-~]{8}$/;
 
     return CORE::crypt( $input, $self->_salt() );
 }

@@ -64,6 +64,7 @@ returns true if the verification succeeds.
 override 'verify' => sub {
     my $self = shift;
     my ( $input, $data ) = @_;
+    croak ref($self). " doesn't allow any Wide Characters or white spaces\n" if $input =~ /[^ -~]/;
     return super() if $data =~ /^[!-~]{13}$/; # with crypt in Perl
     return $data eq unix_md5_crypt( $input, $data );
 };
@@ -89,8 +90,8 @@ sub encrypt {
     my $self = shift;
     my $input = shift;
     my $min = $self->minimum();
-    croak __PACKAGE__ ." requires at least $min length" if length $input < $min;
-    croak __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n" if $input !~ /[ -~]/;
+    croak ref($self) ." requires at least $min length" if length $input < $min;
+    croak ref($self). " doesn't allow any Wide Characters or white spaces\n" if $input !~ /[ -~]/;
 
     return unix_md5_crypt( $input, $self->_salt() );
 }

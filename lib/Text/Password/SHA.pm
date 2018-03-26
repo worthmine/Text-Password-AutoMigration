@@ -67,6 +67,8 @@ sub verify {
     my $self = shift;
     my ( $input, $data ) = @_;
 
+    carp "Empty data strings" unless length $data;
+
      return $data eq Crypt::Passwd::XS::unix_sha512_crypt( $input, $data )
     if $data =~ /^\$6\$[!-~]{1,8}\$[!-~]{86}$/;
      return $data eq Crypt::Passwd::XS::unix_sha256_crypt( $input, $data )
@@ -93,8 +95,8 @@ sub encrypt {
     my $self = shift;
     my $input = shift;
     my $min = $self->minimum();
-    croak __PACKAGE__ ." requires at least $min length" if length $input < $min;
-    croak __PACKAGE__. " doesn't allow any Wide Characters or white spaces\n" if $input !~ /[ -~]/;
+    croak ref($self) ." requires at least $min length" if length $input < $min;
+    croak ref($self). " doesn't allow any Wide Characters or white spaces\n" if $input =~ /[^ -~]/;
 
     return Crypt::Passwd::XS::unix_sha512_crypt( $input, $self->_salt() );
 }

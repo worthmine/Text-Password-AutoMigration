@@ -81,7 +81,8 @@ sub verify {
     my $self = shift;
     my ( $input, $data ) = @_;
     warn "CORE::crypt makes 13bytes hash strings. Your data must be wrong: $data"
-        if $data !~ /^[!-~]{13}$/;
+        if $data !~ /^[ !-~]{13}$/;
+
     return $data eq CORE::crypt( $input, $data );
 }
 

@@ -52,7 +52,8 @@ $pwd->default(12);
 is length($raw), 12, "succeed to generate raw password with 12 length";    # 6
 
 $pwd->migrate(0);                                                          # force to return Boolean with verify()
-$flag = $pwd->verify( $raw, $hash );
+$flag = $pwd->verify( $raw, $hash ) || 0;
+
 is $flag, 1, "verify: " . $ok[$flag];                                      # 7
 
 done_testing();

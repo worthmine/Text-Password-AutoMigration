@@ -105,7 +105,7 @@ sub nonce {
     do {    # redo unless it gets enough strength
         $n = $w[ rand @w ];
         $n .= $ascii[ rand @ascii ] until length $n >= $length;
-    } while ( $n !~ /\W/ or $n !~ /\d/ or $n !~ /[A-Z]/ or $n !~ /[a-z]/ );
+    } while $n =~ /^\w+$/ or $n =~ /^\W+$/ or $n !~ /\d/ or $n !~ /[A-Z]/ or $n !~ /[a-z]/;
     return $n;
 }
 

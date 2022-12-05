@@ -18,7 +18,8 @@ subtest 'verify with CORE::Crypt 100 times' => sub {    # 3
     plan tests => 100;
     foreach ( 1 .. 100 ) {
         $flag = $pwd->verify( $raw, $hash );
-        like $flag, qr/^\$6\$[ !-~]{1,8}\$[!-~]{86}$/, "verify: " . $ok[ $flag ne '' ];
+        like $flag, qr/^\$6\$[!-~]{1,8}\$[!-~]{86}$/, "verify: " . $ok[ $flag ne '' ];
+
     }
 };
 
@@ -29,7 +30,8 @@ subtest 'verify with MD5 100 times' => sub {    # 4
     plan tests => 100;
     foreach ( 1 .. 100 ) {
         $flag = $pwd->verify( $raw, $hash );
-        like $flag, qr/^\$6\$[ !-~]{1,8}\$[!-~]{86}$/, "verify: " . $ok[ $flag ne '' ];
+        like $flag, qr/^\$6\$[!-~]{1,8}\$[!-~]{86}$/, "verify: " . $ok[ $flag ne '' ];
+
     }
 };
 
@@ -40,9 +42,10 @@ subtest 'verify with SHA512 100 times' => sub {    # 5
     plan tests => 200;
     foreach ( 1 .. 100 ) {
         $flag = $pwd->verify( $raw, $hash );
-        like $flag, qr/^\$6\$[ !-~]{1,8}\$[!-~]{86}$/,    # 5.1
+        like $flag, qr/^\$6\$[!-~]{1,8}\$[!-~]{86}$/,    # 5.1
+
             "verify: " . $ok[ $flag ne '' ];
-        isnt $flag, $hash,                                # 5.2
+        isnt $flag, $hash,                               # 5.2
             "succeed to make new hash from same password";
     }
 };

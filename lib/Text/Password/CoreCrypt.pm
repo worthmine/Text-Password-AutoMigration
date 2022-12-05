@@ -17,7 +17,8 @@ __PACKAGE__->meta->make_immutable;
 no Moose;
 
 my @ascii = (
-    ' ',        '!', '#', qw! " $ % & ' ( ) * + !, ',', qw! - . / !,
+    '!', '#', qw! " $ % & ' ( ) * + !, ',', qw! - . / !,
+
     0 .. 9,     qw( : ; < = > ? @ ),
     'A' .. 'Z', qw( [ \ ] ^ _ ` ),     # to void syntax highlighting -> `
     'a' .. 'z', qw( { | } ~ ),

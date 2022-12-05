@@ -7,7 +7,8 @@ use_ok 'Text::Password::MD5';               # 1
 my $pwd = new_ok('Text::Password::MD5');    # 2
 
 my ( $raw, $hash ) = $pwd->generate();
-like $pwd->encrypt($raw), qr/^\$1\$[!-~]{1,8}\$[!-~]{22}$/,    # 3
+like $pwd->encrypt($raw), qr/^\$1\$[ !-~]{1,8}\$[!-~]{22}$/,    # 3
+
     "succeed to encrypt from raw password";
 
 subtest "generate with unix_md5_crypt" => sub {    # 4

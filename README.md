@@ -8,7 +8,7 @@ Text::Password::AutoMigration - generate and verify Password with any contexts
     my $pwd = Text::Password::AutoMigration->new();
     my( $raw, $hash ) = $pwd->genarate();          # list context is required
     my $input = $req->body_parameters->{passwd};
-    my $data = $pwd->encrypt($input);              # salt is made automatically
+    my $data = $pwd->encrypt($input);              # you don't have to care about salt
     my $flag = $pwd->verify( $input, $data );
 
 # DESCRIPTION

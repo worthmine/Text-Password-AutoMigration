@@ -41,8 +41,8 @@ subtest "generate unreadable strings" => sub {    #10
 };
 
 ( $raw, $hash ) = eval { $pwd->generate(3) };
-like $@ ,
-    qr/^Text::Password::CoreCrypt::generate requires at least 4 length/i,
+like $@, qr/^Text::Password::CoreCrypt::generate requires at least 4 length/,
+
     "fail to make too short password";                                #11
 
 done_testing;

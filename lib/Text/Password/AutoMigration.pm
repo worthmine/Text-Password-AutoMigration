@@ -105,13 +105,12 @@ New hash length is at least 100 if length of nonce . So you have to change your 
 around verify => sub {
     my ( $orig,  $self ) = ( shift, shift );
     my ( $input, $data ) = @_;
-    if ( $self->$orig(@_) ) {
-        return $self->migrate() ? $self->encrypt($input) : 1;
-    } elsif ( $self->Text::Password::MD5::verify(@_) ) {
+    if ( my $flag = $self->$orig(@_) ) {
         return $self->migrate() ? $self->encrypt($input) : 1;
     }
     return 0;
 };
+
 1;
 
 __END__

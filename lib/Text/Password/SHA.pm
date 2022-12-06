@@ -71,9 +71,10 @@ sub verify {
     croak "Empty data strings" unless length $data;
 
     return $data eq Crypt::Passwd::XS::unix_sha512_crypt( $input, $data )
-        if $data =~ /^\$6\$[!-~]{1,$m}\$[!-~]{86}$/;
+        if $data =~ m|^\$6\$[!-~]{1,$m}\$[\w/\.]{86}$|;
+
     return $data eq Crypt::Passwd::XS::unix_sha256_crypt( $input, $data )
-        if $data =~ /^\$5\$([!-~]{1,$m})\$[!-~]{43}$/;
+        if $data =~ m|^\$5\$[!-~]{1,$m}\$[!-~]{43}$|;
 
     return $data eq sha1_hex($input) if $data =~ /^[0-9a-f]{40}$/i;
     return 0;

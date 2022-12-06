@@ -8,7 +8,8 @@ use constant Min => 4;
 extends 'Text::Password::MD5';
 has default => ( is => 'rw', isa => Int->where('$_ >= 10'), default => sub {10} );
 use Carp;
-use Digest::SHA qw(sha1_hex);
+use autouse 'Digest::SHA' => qw(sha1_hex);
+
 use Crypt::Passwd::XS;
 
 =encoding utf-8

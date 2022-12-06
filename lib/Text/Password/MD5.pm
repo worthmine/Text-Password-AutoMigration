@@ -9,7 +9,7 @@ extends 'Text::Password::CoreCrypt';
 use constant Min => 4;
 
 use Carp;
-use Crypt::PasswdMD5;
+use autouse 'Crypt::PasswdMD5' => qw(unix_md5_crypt);
 
 =encoding utf-8
 

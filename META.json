@@ -42,7 +42,7 @@
       },
       "runtime" : {
          "requires" : {
-            "Digest::SHA" : "5.96",
+            "Crypt::Passwd::XS" : "0.601",
             "Moo" : "2.005004",
             "Types::Standard" : "1.012004",
             "perl" : "5.008008",
@@ -51,7 +51,8 @@
       },
       "test" : {
          "recommends" : {
-            "Crypt::PasswdMD5" : "1.4"
+            "Crypt::PasswdMD5" : "1.4",
+            "Digest::SHA" : "5.96"
          },
          "requires" : {
             "Test::More" : "0.98"

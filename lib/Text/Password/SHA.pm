@@ -2,15 +2,15 @@ package Text::Password::SHA;
 our $VERSION = "0.16";
 
 use Moo;
+use Carp;
+use Crypt::Passwd::XS;
+use autouse 'Digest::SHA' => qw(sha1_hex);
+
 use Types::Standard qw(Int);
 use constant Min => 4;
 
 extends 'Text::Password::MD5';
 has default => ( is => 'rw', isa => Int->where('$_ >= 10'), default => sub {10} );
-use Carp;
-use autouse 'Digest::SHA' => qw(sha1_hex);
-
-use Crypt::Passwd::XS;
 
 =encoding utf-8
 

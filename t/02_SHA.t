@@ -1,41 +1,44 @@
 use strict;
 use warnings;
 
-use Test::More tests => 11;
+use Test::More tests => 12;
+
+eval { require Digest::SHA } or plan skip_all => 'Digest::SHA is not installed';
 
 use_ok 'Text::Password::SHA';               # 1
 my $pwd = new_ok('Text::Password::SHA');    # 2
 my $m   = $pwd->default();
 
 my ( $raw, $hash ) = $pwd->generate();
-like $pwd->encrypt($raw), qr/^\$6\$([!-~]{1,$m})\$[!-~]{86}$/,    # 3
-
-    "succeed to encrypt with SHA512 from raw password";
-is $pwd->verify( $raw, $hash ), 1, "succeed to verify with SHA512";    # 4
-
-is $pwd->verify( $pwd->nonce(), $hash ), '', "fail to verify with random strings";    # 5
-is $pwd->verify( '', $hash ), '',                                                     # 6
-
-    "fail to verify with empty string";
+like $pwd->encrypt($raw), qr|^\$6\$[!-~]{1,$m}\$[\w/\.]{86}$|, "encrypt with SHA512 from raw";    # 3
+is $pwd->verify( $raw,          $hash ), 1,  "succeed to verify with SHA512";                     # 4
+is $pwd->verify( $pwd->nonce(), $hash ), '', "fail to verify with random strings";                # 5
+is $pwd->verify( '',            $hash ), '', "fail to verify with empty string";                  # 6
 
 ( $raw, $hash ) = ( '{fAey4HR', '$5$qiw{V84t$VtRUajh5FQq4l4m3Nx3hvNIgLZLY/YldIqodkMmWz14' );
-is( $pwd->verify( $raw, $hash ), 1, "succeed to verify with SHA256" );                # 7
+is( $pwd->verify( $raw, $hash ), 1, "succeed to verify with SHA256" );                            # 7
 
 ( $raw, $hash ) = ( 'Py3[jJmr', '2167de0e8512b50e79e73c8ce8663a79eb461869' );
-is( $pwd->verify( $raw, $hash ), 1, "succeed to verify with SHA1" );                  # 8
+is( $pwd->verify( $raw, $hash ), 1, "succeed to verify with SHA1" );                              # 8
 
 $hash = eval { $pwd->encrypt("few") };
-like $@,                                                                              # 9
-
-    qr/^Text::Password::SHA requires at least 4 length/, "fail to encrypt too short password";
+like $@,
+    qr/^Text::Password::SHA requires at least 4 length/, "fail to encrypt too short password";    # 9
 
 $hash = eval { $pwd->encrypt("f e w") };
-is $@, '', "succeed to encrypt the strings with space";                               #10
+is $@, '', "succeed to encrypt the strings with space";                                           #10
 
 eval { $hash = $pwd->encrypt("f e\tw") };
-like $@,                                                                              #11
+like $@, qr/^Text::Password::SHA doesn't allow any Wide Characters or white spaces/,
+    "fail to encrypt with forbidden charactors";                                                  #11
 
-    qr/^Text::Password::SHA doesn't allow any Wide Characters or white spaces/,
-    "fail to encrypt with forbidden charactors";
+subtest "generate with SHA-512" => sub {    # 12
+    plan tests => 4;
+    ( $raw, $hash ) = $pwd->generate();
+    like $hash, qr|^\$6\$[!-~]{1,$m}\$[\w/\.]{86}$|, "succeed to generate hash with SHA512";    # 12.1
+    is $pwd->verify( $raw,          $hash ), 1,  "succeed to verify";                           # 12.2
+    is $pwd->verify( $pwd->nonce(), $hash ), '', "fail to verify with random strings";          # 12.3
+    is $pwd->verify( '',            $hash ), '', "fail to verify with empty string";            # 12.4
+};
 
-done_testing();
+done_testing;

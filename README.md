@@ -14,6 +14,7 @@ Text::Password::AutoMigration - generate and verify Password with any contexts
 # DESCRIPTION
 
 Text::Password::AutoMigration is a module for some lasy Administrators.
+
 It would help Administrators who tries to replace old crypted MD5ed message digests.
 
 The method _verify_  automatically detects the algorithm which is applied to the hash
@@ -29,7 +30,7 @@ Therefore all you have to do is to replace the old hash with the new one.
 
 No arguments are required. But you can set some parameters.
 
-- default(_Int_)
+- default( _Int_ )
 
     You can set default length with using 'default' attribute like below:
 
@@ -37,21 +38,26 @@ No arguments are required. But you can set some parameters.
 
     It must be an Int, defaults to 10.
 
-- readablity(_Bool_)
+- readablity( _Bool_ )
 
     You can set default strength for password with usnig 'readablity' attribute like below:
 
         $pwd = Text::Pasword::AutoMiglation->new( readability => 0 );
 
     It must be a Boolean, defaults to 1.
+
     If it was false, _generate()_ starts to return stronger passwords with charactors hard to read.
 
-- migrate(_Bool_)
+- migrate( _Bool_ )
 
     It must be a Boolean, defaults to 1.
+
     If you've already replaced all hash or started to make new applications with this module,
-    you can call the constructor with _migrate =_ 0>.
+
+    you can call the constructor with _migrate =< 0_.
+
     Then _verify()_ would not return a new hash but always 1.
+
     It may help you a little faster without any change of your code.
 
 ## Methods and Subroutines
@@ -65,9 +71,10 @@ it Returns a true strings instead of boolean if the verification succeeds.
 Every value is **brand new hash from SHA-512** because it is true anyway.
 
 So you can replace hash in your Database easily like below:
- my $pwd = Text::Password::AutoMigration->new();
- my $dbh = DBI->connect(...);
- my $db\_hash\_ref = $dbh->fetchrow\_hashref(...);
+
+    my $pwd = Text::Password::AutoMigration->new();
+    my $dbh = DBI->connect(...);
+    my $db_hash_ref = $dbh->fetchrow_hashref(...);
 
     my $param = $req->body_parameters;
     my $hash = $pwd->verify( $param->{passwd}, $db_hash_ref->{passwd} );
@@ -80,19 +87,19 @@ New hash length is at least 100 if length of nonce . So you have to change your 
 
     ALTER TABLE User CHANGE passwd passwd VARCHAR(100);
 
-### nonce(_Int_)
+### nonce( _Int_ )
 
 generates the random strings with enough strength.
 
 the length defaults to 10 or $self->default().
 
-### encrypt(_Str_)
+### encrypt( _Str_ )
 
 returns hash with unix\_sha512\_crypt().
 
 salt will be made automatically.
 
-### generate(_Int_)
+### generate( _Int_ )
 
 genarates pair of new password and it's hash.
 
@@ -102,6 +109,7 @@ unless $self->readability is 0.
 the length defaults to 10 || $self->default().
 
 **DON'T TRUST** this method.
+
 According to [Password expert says he was wrong](https://www.usatoday.com/story/news/nation-now/2017/08/09/password-expert-says-he-wrong-numbers-capital-letters-and-symbols-useless/552013001/),
 it's not a safe way. So, I will rewrite this method as soon as I find the better way.
 

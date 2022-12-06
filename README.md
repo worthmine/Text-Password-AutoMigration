@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/worthmine/Text-Password-AutoMigration.svg?branch=master)](https://travis-ci.org/worthmine/Text-Password-AutoMigration)
+[![Build Status](https://travis-ci.org/worthmine/Text-Password-AutoMigration.svg?branch=main)](https://travis-ci.org/worthmine/Text-Password-AutoMigration)
 # NAME
 
 Text::Password::AutoMigration - generate and verify Password with any contexts
@@ -56,7 +56,8 @@ No arguments are required. But you can set some parameters.
 
     This module is for Administrators who try to replace hashes in their DB.
     However, if you've already done to replace them or start to make new Apps with this module,
-    you can set param migrate as 0. 
+    you can set param migrate as 0.
+
     Then it will work a little faster without regenerating new hashes.
 
 ## Methods and Subroutines

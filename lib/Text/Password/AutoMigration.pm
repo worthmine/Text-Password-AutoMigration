@@ -2,7 +2,8 @@ package Text::Password::AutoMigration;
 our $VERSION = "0.16";
 
 use Carp;
-use Moose;
+use Moo;
+
 extends 'Text::Password::SHA';
 
 =encoding utf-8
@@ -24,12 +25,12 @@ Text::Password::AutoMigration - generate and verify Password with any contexts
 Text::Password::AutoMigration is the Module for lasy Administrators.
 
 It always generates the password with SHA512.
- 
+
 And verifies automatically the hash with
 B<CORE::crypt>, B<MD5>, B<SHA-1 by hex>, B<SHA-256> and of course B<SHA-512>.
 
 All you have to do are those:
- 
+
 1. use this module
 
 2. replace the hashes in your DB periodically.
@@ -37,7 +38,7 @@ All you have to do are those:
 =head2 Constructor and initialization
 
 =head3 new()
- 
+
 No arguments are required. But you can set some parameters.
 
 =over
@@ -66,12 +67,15 @@ It must be a Boolean, defaults to 1.
 
 This module is for Administrators who try to replace hashes in their DB.
 However, if you've already done to replace them or start to make new Apps with this module,
-you can set param migrate as 0. 
+you can set param migrate as 0.
+
+
 Then it will work a little faster without regenerating new hashes.
 
 =cut
 
-has migrate => ( is => 'rw', isa => 'Bool', default => 1 );
+use Types::Standard qw(Int Bool);
+has migrate => ( is => 'rw', isa => Bool, default => 1 );
 
 =back
 
@@ -84,7 +88,7 @@ returns the true value if the verification succeeds.
 Actually, the value is new hash with SHA-512 from $raw.
 
 So you can replace hashes in your DB very easily like below:
- 
+
  my $pwd = Text::Password::AutoMigration->new();
  my $input = $req->body_parameters->{passwd};
  my $hash = $pwd->verify( $input, $db{passwd} ); # returns hash with SHA-512, and it's true
@@ -101,18 +105,15 @@ New hash length is at least 98. So you have to change your DB like below:
 
 =cut
 
-override 'verify' => sub {
-    my $self = shift;
+around verify => sub {
+    my ( $orig,  $self ) = ( shift, shift );
     my ( $input, $data ) = @_;
-
-    if ( super() ){
-        return $self->encrypt($input) if $self->migrate();
-        return 1;
-    }elsif( $self->Text::Password::MD5::verify(@_) ){
-        return $self->encrypt($input) if $self->migrate();
-        return 1;
+    if ( $self->$orig(@_) ) {
+        return $self->migrate() ? $self->encrypt($input) : 1;
+    } elsif ( $self->Text::Password::MD5::verify(@_) ) {
+        return $self->migrate() ? $self->encrypt($input) : 1;
     }
-    return undef;
+    return 0;
 };
 
 =head3 nonce($length)
@@ -126,7 +127,7 @@ the length defaults to 8($self->default).
 returns hash with unix_sha512_crypt().
 
 salt will be made automatically.
- 
+
 =head3 generate($length)
 
 genarates pair of new password and it's hash.
@@ -140,11 +141,8 @@ B<DON'T TRUST> this method.
 According to L<Password expert says he was wrong|https://www.usatoday.com/story/news/nation-now/2017/08/09/password-expert-says-he-wrong-numbers-capital-letters-and-symbols-useless/552013001/>,
 it's not a safe way. So, I will rewrite this method as soon as I find the better way.
 
- 
-=cut
 
-__PACKAGE__->meta->make_immutable;
-no Moose;
+=cut
 
 1;
 

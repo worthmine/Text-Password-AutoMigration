@@ -4,17 +4,16 @@ our $VERSION = "0.16";
 require 5.008_008;
 use Carp qw(croak carp);
 
-use Moose;
-use Moose::Util::TypeConstraints;
+use Moo;
+use strictures 2;
+use namespace::clean;
+use Types::Standard qw(Int Bool);
 
-has minimum => ( is => 'ro', isa => 'Int', default => 4 );
+has minimum     => ( is => 'ro', isa => Int->where('$_ >= 4'), default => sub {4} );
+has default     => ( is => 'rw', isa => Int->where('$_ >= 8'), default => sub {8} );
+has readability => ( is => 'rw', isa => Bool, default => 1 );
 
-subtype 'Default', as 'Int', where { $_ >= 4 }, message {"The Default must be 4 or higher."};
-has default     => ( is => 'rw', isa => 'Default', default => 8 );
-has readability => ( is => 'rw', isa => 'Bool',    default => 1 );
-
-__PACKAGE__->meta->make_immutable;
-no Moose;
+no Moo::sification;
 
 my @ascii = (
     '!', '#', qw! " $ % & ' ( ) * + !, ',', qw! - . / !,
@@ -97,14 +96,16 @@ the length defaults to 8($self->default).
 
 sub nonce {
     my $self   = shift;
-    my $length = shift || 8;
-    croak "Unvalid length for nonce was set" unless $length =~ /^\d+$/ and $length >= 4;
+    my $length = shift || $self->default;
+    croak "Unvalid length for nonce was set"
+        unless $length =~ /^\d+$/ and $length >= $self->minimum;
 
     my $n = '';
     my @w = ( 0 .. 9, 'a' .. 'z', 'A' .. 'Z' );
     do {    # redo unless it gets enough strength
         $n = $w[ rand @w ];
-        $n .= $ascii[ rand @ascii ] until length $n >= $length;
+        $n .= $ascii[ rand @ascii ] while length $n < $length;
+
     } while $n =~ /^\w+$/ or $n =~ /^\W+$/ or $n !~ /\d/ or $n !~ /[A-Z]/ or $n !~ /[a-z]/;
     return $n;
 }
@@ -121,9 +122,11 @@ sub encrypt {
     my $self  = shift;
     my $input = shift;
     my $min   = $self->minimum();
-    carp __PACKAGE__ . " requires at least $min length"          if length $input < $min;
+    croak __PACKAGE__ . " requires at least $min length" if length $input < $min;
+
     carp __PACKAGE__ . " ignores the password with over 8 bytes" if length $input > 8;
-    carp __PACKAGE__ . " doesn't allow any Wide Characters or white spaces\n" if $input =~ /[^ -~]/;
+    croak __PACKAGE__ . " doesn't allow any Wide Characters or white spaces\n"
+        if $input =~ /[^ -~]/;
 
     return CORE::crypt( $input, $self->_salt() );
 }

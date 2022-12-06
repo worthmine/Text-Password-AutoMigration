@@ -45,7 +45,7 @@
             "Crypt::Passwd::XS" : "0.601",
             "Crypt::PasswdMD5" : "1.4",
             "Digest::SHA" : "0",
-            "Moose" : "2.2006",
+            "Moo" : "2.005004",
             "perl" : "5.008008"
          }
       },

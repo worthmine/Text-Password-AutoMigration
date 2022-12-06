@@ -6,6 +6,7 @@ use strictures 2;
 use namespace::clean;
 
 extends 'Text::Password::CoreCrypt';
+use constant Min => 4;
 
 use Carp;
 use Crypt::PasswdMD5;
@@ -68,17 +69,16 @@ sub verify {
     my ( $self, $input, $data ) = @_;
     carp ref($self) . " doesn't allow any Wide Characters or white spaces\n" if $input =~ /[^ -~]/;
 
-    #    return super() if $data =~ /^[!-~]{13}$/;    # with crypt in Perl
     return $data eq unix_md5_crypt( $input, $data );
 }
 
-=head3 nonce($length)
+=head3 nonce(I<Int>)
 
 generates the random strings with enough strength.
 
-the length defaults to 8($self->default).
+the length defaults to 8 || $self->default().
 
-=head3 encrypt($raw)
+=head3 encrypt(I<Str>)
 
 returns hash with unix_md5_crypt().
 
@@ -89,26 +89,25 @@ salt will be made automatically.
 sub encrypt {
     my $self  = shift;
     my $input = shift;
-    my $min   = $self->minimum();
-    croak ref($self) . " requires at least $min length" if length $input < $min;
+    croak ref($self) . " requires at least " . Min . " length" if length $input < Min;
     croak ref($self) . " doesn't allow any Wide Characters or white spaces\n" if $input =~ /[^ -~]/;
     my $salt = '';
     do { $salt = $self->nonce } while $salt =~ /\$/;
     return unix_md5_crypt( $input, $salt );
 }
 
-=head3 generate($length)
+1;
+
+=head3 generate(I<Int>)
 
 genarates pair of new password and it's hash.
 
 less readable characters(0Oo1Il|!2Zz5sS$6b9qCcKkUuVvWwXx.,:;~-^'"`) are forbidden
 unless $self->readability is 0.
 
-the length defaults to 8($self->default).
+the length defaults to 8 || $self->default().
 
 =cut
-
-1;
 
 __END__
 
@@ -121,4 +120,4 @@ it under the same terms as Perl itself.
 
 =head1 AUTHOR
 
-Yuki Yoshida(worthmine) E<lt>worthmine!at!gmail.comE<gt>
+Yuki Yoshida E<lt>worthmine@users.noreply.github.comE<gt>

@@ -1,7 +1,7 @@
 {
    "abstract" : "generate and verify Password with any contexts",
    "author" : [
-      "Yuki Yoshida(worthmine) <worthmine!at!gmail.com>"
+      "Yuki Yoshida <worthmine@users.noreply.github.com>"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Minilla/v3.1.14, CPAN::Meta::Converter version 2.150010",
@@ -42,14 +42,17 @@
       },
       "runtime" : {
          "requires" : {
-            "Crypt::Passwd::XS" : "0.601",
-            "Crypt::PasswdMD5" : "1.4",
-            "Digest::SHA" : "0",
+            "Digest::SHA" : "5.96",
             "Moo" : "2.005004",
-            "perl" : "5.008008"
+            "Types::Standard" : "1.012004",
+            "perl" : "5.008008",
+            "strictures" : "2.000006"
          }
       },
       "test" : {
+         "recommends" : {
+            "Crypt::PasswdMD5" : "1.4"
+         },
          "requires" : {
             "Test::More" : "0.98"
          }
@@ -71,7 +74,6 @@
    "x_authority" : "cpan:WORTHMINE",
    "x_contributors" : [
       "Mohammad S Anwar <mohammad.anwar@yahoo.com>",
-      "Yuki Yoshida <worthmine@users.noreply.github.com>",
       "worthmine <worthmine@gmail.com>"
    ],
    "x_serialization_backend" : "JSON::PP version 4.07",

@@ -3,7 +3,7 @@ Revision history for Perl extension Text-Password-AutoMigration
 {{$NEXT}}
 
 0.16 2022-12-05T09:53:55Z
-  - wqupdate for latest perl version
+  - update for latest perl version
 
 0.15 2018-03-26T03:31:16Z
   - Fixed the bug: white spaces like ' ' was forbidden for input in sub verify
@@ -53,4 +53,3 @@ Revision history for Perl extension Text-Password-AutoMigration
 0.01 2017-08-01T15:10:34Z
 
  - original version
-

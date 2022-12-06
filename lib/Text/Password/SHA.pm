@@ -3,9 +3,10 @@ our $VERSION = "0.16";
 
 use Moo;
 use Types::Standard qw(Int);
+use constant Min => 4;
 
 extends 'Text::Password::MD5';
-has default => ( is => 'rw', isa => Int->where('$_ >= 12'), default => sub {12} );
+has default => ( is => 'rw', isa => Int->where('$_ >= 10'), default => sub {10} );
 use Carp;
 use Digest::SHA qw(sha1_hex);
 use Crypt::Passwd::XS;
@@ -36,13 +37,13 @@ No arguments are required. But you can set some parameters.
 
 =over
 
-=item default
+=item default(I<Int>)
 
 You can set default length with param 'default' like below:
 
- $pwd = Text::Pasword::AutoMiglation->new( default => 12 );
+ $pwd = Text::Pasword::AutoMiglation->new( default => 8 );
 
-=item readablity
+=item readablity(I<Bool>)
 
 Or you can set default strength for password with param 'readablity'.
 
@@ -77,13 +78,13 @@ sub verify {
     return 0;
 }
 
-=head3 nonce($length)
+=head3 nonce(I<Int>)
 
 generates the random strings with enough strength.
 
-the length defaults to 8($self->default).
+the length defaults to 10 || $self->default().
 
-=head3 encrypt($raw)
+=head3 encrypt(I<Str>)
 
 returns hash with unix_sha512_crypt().
 
@@ -94,24 +95,23 @@ salt will be made automatically.
 sub encrypt {
     my $self  = shift;
     my $input = shift;
-    my $min   = $self->minimum();
-    croak ref($self) . " requires at least $min length" if length $input < $min;
+    croak ref($self) . " requires at least " . Min . " length" if length $input < Min;
     croak ref($self) . " doesn't allow any Wide Characters or white spaces\n" if $input =~ /[^ -~]/;
-    return Crypt::Passwd::XS::unix_sha512_crypt( $input, $self->nonce() );
+    return Crypt::Passwd::XS::unix_sha512_crypt( $input, $self->nonce );
 }
 
 1;
 
 __END__
 
-=head3 generate($length)
+=head3 generate(I<Int>)
 
 genarates pair of new password and it's hash.
 
 less readable characters(0Oo1Il|!2Zz5sS$6b9qCcKkUuVvWwXx.,:;~-^'"`) are forbidden
 unless $self->readability is 0.
 
-the length defaults to 12($self->default).
+the length defaults to 10 || $self->default().
 
 =head1 LICENSE
 
@@ -122,4 +122,4 @@ it under the same terms as Perl itself.
 
 =head1 AUTHOR
 
-Yuki Yoshida(worthmine) E<lt>worthmine!at!gmail.comE<gt>
+Yuki Yoshida E<lt>worthmine@users.noreply.github.comE<gt>

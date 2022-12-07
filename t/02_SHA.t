@@ -8,13 +8,15 @@ SKIP: {
 
     use_ok 'Text::Password::SHA';               # 1
     my $pwd = new_ok('Text::Password::SHA');    # 2
-    my $m   = $pwd->default();
+    my $m   = $pwd->default;
 
-    my ( $raw, $hash ) = $pwd->generate();
+    my ( $raw, $hash ) = $pwd->generate;
+
     like $pwd->encrypt($raw), qr|^\$6\$[!-~]{1,$m}\$[\w/\.]{86}$|, "encrypt with SHA512 from raw"; # 3
-    is $pwd->verify( $raw,          $hash ), 1,  "succeed to verify with SHA512";                  # 4
-    is $pwd->verify( $pwd->nonce(), $hash ), '', "fail to verify with random strings";             # 5
-    is $pwd->verify( '',            $hash ), '', "fail to verify with empty string";               # 6
+    is $pwd->verify( $raw,        $hash ), 1,  "succeed to verify with SHA512";                    # 4
+    is $pwd->verify( $pwd->nonce, $hash ), '', "fail to verify with random strings";               # 5
+
+    is $pwd->verify( '', $hash ), '', "fail to verify with empty string";                          # 6
 
     ( $raw, $hash ) = ( '{fAey4HR', '$5$qiw{V84t$VtRUajh5FQq4l4m3Nx3hvNIgLZLY/YldIqodkMmWz14' );
     is( $pwd->verify( $raw, $hash ), 1, "succeed to verify with SHA256" );                         # 7
@@ -24,7 +26,8 @@ SKIP: {
 
     $hash = eval { $pwd->encrypt("few") };
     like $@,
-        qr/^Text::Password::SHA requires at least 4 length/, "fail to encrypt too short password"; # 9
+        qr/^Text::Password::SHA requires a strings longer than at least 4/,
+        "fail to encrypt too short password";                                                      # 9
 
     $hash = eval { $pwd->encrypt("f e w") };
     is $@, '', "succeed to encrypt the strings with space";                                        #10
@@ -35,11 +38,13 @@ SKIP: {
 
     subtest "generate with SHA-512" => sub {                                                       # 12
         plan tests => 4;
-        ( $raw, $hash ) = $pwd->generate();
+        ( $raw, $hash ) = $pwd->generate;
+
         like $hash, qr|^\$6\$[!-~]{1,$m}\$[\w/\.]{86}$|, "succeed to generate hash with SHA512";   # 12.1
-        is $pwd->verify( $raw,          $hash ), 1,  "succeed to verify";                          # 12.2
-        is $pwd->verify( $pwd->nonce(), $hash ), '', "fail to verify with random strings";         # 12.3
-        is $pwd->verify( '',            $hash ), '', "fail to verify with empty string";           # 12.4
+        is $pwd->verify( $raw,        $hash ), 1,  "succeed to verify";                            # 12.2
+        is $pwd->verify( $pwd->nonce, $hash ), '', "fail to verify with random strings";           # 12.3
+
+        is $pwd->verify( '', $hash ), '', "fail to verify with empty string";                      # 12.4
     };
 }
 

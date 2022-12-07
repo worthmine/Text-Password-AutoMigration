@@ -5,7 +5,7 @@ use Moo;
 use strictures 2;
 use autouse 'Carp'             => qw(croak carp);
 use autouse 'Crypt::PasswdMD5' => qw(unix_md5_crypt);
-use namespace::clean;
+use constant Min => 4;
 
 =encoding utf-8
 
@@ -87,8 +87,9 @@ salt will be made automatically.
 
 sub encrypt {
     my ( $self, $input ) = @_;
-    croak ref($self), " requires at least ", Min, " length" if length $input < Min;
-    croak ref($self), " doesn't allow any Wide Characters or white spaces" if $input =~ /[^ -~]/;
+    croak ref $self, " requires at least ", Min, " length" if length $input < Min;
+    croak ref $self, " doesn't allow any Wide Characters or white spaces" if $input =~ /[^ -~]/;
+
     my $salt = '';
     do { $salt = $self->nonce } until $salt !~ /\$/;
     return unix_md5_crypt( $input, $salt );

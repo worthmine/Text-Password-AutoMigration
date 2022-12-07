@@ -69,16 +69,18 @@ returns true if the verification succeeds.
 =cut
 
 sub verify {
-    my $self = shift;
-    my $m    = $self->default;
-    my ( $input, $data ) = @_;
-    my $length = Int->where( Min . ' <= length $data' );
+    my ( $self, $input, $data ) = ( shift, @_ );
+    my $m = $self->default;
+    return $data eq Crypt::Passwd::XS::unix_sha512_crypt( $input, $data )
 
-    return $data eq Crypt::Passwd::XS::unix_sha512_crypt(@_)
         if $data =~ m|^\$6\$[!-~]{1,$m}\$[\w/\.]{86}$|;
-    return $data eq Crypt::Passwd::XS::unix_sha256_crypt(@_)
+    return $data eq Crypt::Passwd::XS::unix_sha256_crypt( $input, $data )
+
         if $data =~ m|^\$5\$[!-~]{1,$m}\$[\w/\.]{43}$|;
-    return $data =~ /^[\da-f]{40}$/i ? $data eq sha1_hex($input) : 0;
+    return $data eq sha1_hex($input) if $data =~ /^[\da-f]{40}$/i;
+    return $data eq crypt( $input, $data );
+    croak __PACKAGE__, " doesn't support this hash: $data";
+
 }
 
 =head3 nonce( I<Int> )
@@ -97,8 +99,9 @@ salt will be made automatically.
 
 sub encrypt {
     my ( $self, $input ) = @_;
-    croak ref($self), " requires as long as at least ", Min if length $input < Min;
-    croak ref($self), " doesn't allow any Wide Characters or white spaces" if $input =~ /[^ -~]/;
+    croak ref $self, " requires a strings longer than at least ", Min if length($input) < Min;
+    croak ref $self, " doesn't allow any Wide Characters or white spaces" if $input =~ /[^ -~]/;
+
     return Crypt::Passwd::XS::unix_sha512_crypt( $input, $self->nonce );
 }
 

@@ -4,7 +4,6 @@ our $VERSION = "0.16";
 use Carp;
 use Moo;
 use strictures 2;
-use constant Min => 4;
 
 extends 'Text::Password::SHA';
 
@@ -111,9 +110,10 @@ New hash length is at least 100 if length of nonce . So you have to change your 
 =cut
 
 around verify => sub {
-    my ( $orig, $self, $input, $data ) = ( shift, shift, @_ );
-    return 0 unless $self->$orig( $input, $data );
-    return $self->migrate ? $self->encrypt($input) : 1;
+    my ( $orig, $self ) = ( shift, shift );
+    return 0 unless $self->$orig(@_);
+    return $self->migrate() ? $self->encrypt(@_) : 1;
+
 };
 
 =head3 nonce( I<Int> )

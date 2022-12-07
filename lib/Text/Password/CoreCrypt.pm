@@ -6,22 +6,18 @@ use Carp qw(croak carp);
 
 use Moo;
 use strictures 2;
-use namespace::clean;
-use Types::Standard qw(Int Bool);
 
-has Min => ( is => 'ro', isa => Int->where('$_ >= 4'), default => sub {4} );
+use Types::Standard qw(Int Bool);
+use constant Min => 4;
 
 has default => ( is => 'rw', isa => Int->where('$_ >= 8'), default => sub {8} );
 has readability => ( is => 'rw', isa => Bool, default => 1 );
 
 no Moo::sification;
 
-my @ascii = (
-    '!',        '#', qw! " $ % & ' ( ) * + !, ',', qw! - . / !,
-    0 .. 9,     qw( : ; < = > ? @ ),
-    'A' .. 'Z', qw( [ \ ] ^ _ ` ),     # to void syntax highlighting -> `
-    'a' .. 'z', qw( { | } ~ ),
-);
+my @w     = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );
+my @seeds = ( @w,     '.', '/' );
+my @ascii = ( @seeds, '#', ',', qw# ! " $ % & ' ( ) * + - : ; < = > ? @ [ \ ] ^ _ ` { | } ~ # );
 
 =encoding utf-8
 
@@ -85,15 +81,14 @@ returns true if the verification succeeds.
 sub verify {
     my $self = shift;
     my ( $input, $data ) = @_;
-    return $data eq CORE::crypt(@_);
-    warn __PACKAGE__, " makes 13 bytes hash strings. Your data must be wrong: ", $data
 
-        if $data !~ /^[ !-~]{13}$/;
+    warn __PACKAGE__, " makes 13 bytes hash strings. Your data must be wrong: ", $data
+        unless $data =~ /^[ !-~]{13}$/;
+    return $data eq CORE::crypt( $input, $data );
 
 }
 
 =head3 nonce( I<Int> )
-
 
 generates the random strings with enough strength.
 
@@ -107,7 +102,7 @@ sub nonce {
     croak "Unvalid length for nonce was set" if $length !~ /^\d+$/ or $length < Min;
 
     my $n = '';
-    my @w = ( 0 .. 9, 'a' .. 'z', 'A' .. 'Z' );
+
     do {    # redo unless it gets enough strength
         $n = $w[ rand @w ];
         $n .= $ascii[ rand @ascii ] while length $n < $length;
@@ -118,7 +113,6 @@ sub nonce {
 
 =head3 encrypt( I<Str> )
 
-
 returns hash with CORE::crypt().
 
 salt will be made automatically.
@@ -126,18 +120,15 @@ salt will be made automatically.
 =cut
 
 sub encrypt {
-    my $self  = shift;
-    my $input = shift;
-    croak __PACKAGE__ . " requires at least " . Min . "length"   if length $input < Min;
-    carp __PACKAGE__ . " ignores the password with over 8 bytes" if length $input > 8;
-    croak __PACKAGE__ . " doesn't allow any Wide Characters or white spaces\n"
-        if $input =~ /[^ -~]/;
-    my @seeds = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9, '.', '/' );
+    my ( $self, $input ) = @_;
+    croak __PACKAGE__, " requires at least ", Min, "length" if length $input < Min;
+    carp __PACKAGE__, " ignores the password with over 8 bytes" if length $input > 8;
+    croak __PACKAGE__, " doesn't allow any Wide Characters or white spaces" if $input =~ /[^ -~]/;
+
     return CORE::crypt( $input, $seeds[ rand @seeds ] . $seeds[ rand @seeds ] );
 }
 
 =head3 generate( I<Int> )
-
 
 genarates pair of new password and it's hash.
 
@@ -151,9 +142,9 @@ the length defaults to 8 || $self->default().
 sub generate {
     my $self   = shift;
     my $length = shift || $self->default;
-    croak "unvalid length was set"                        unless $length =~ /^\d+$/;
-    croak ref($self) . "::generate requires list context" unless wantarray;
-    croak ref($self) . "::generate requires at least " . Min . " length" if $length < Min;
+    croak "Invalid length was set" unless $length =~ /^\d+$/;
+    croak ref $self, "::generate requires at least ", Min, " length" if $length < Min;
+    croak ref $self, "::generate requires list context" unless wantarray;
 
     my $raw;
     do {    # redo unless it gets enough readability

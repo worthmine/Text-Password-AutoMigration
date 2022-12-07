@@ -14,26 +14,30 @@ like $@, qr/^Unvalid length for nonce was set/, "fail to make nonce with enough 
 eval { $pwd->nonce('wrong') };
 like $@, qr/^Unvalid length for nonce was set/, "fail to make nonce without setting digit";    # 6
 
-my ( $raw, $hash ) = $pwd->generate();
+my ( $raw, $hash ) = $pwd->generate;
+
 like $pwd->encrypt($raw), qr/^[!-~]{13}$/, "succeed to encrypt from raw password";             # 7
-is $pwd->verify( $pwd->nonce(), $hash ), '', "fail to verify with wrong password";             # 8
+is $pwd->verify( $pwd->nonce, $hash ), '', "fail to verify with wrong password";               # 8
 
 subtest "generate with CORE::crypt" => sub {    # 9
     plan tests => 6;
-    my ( $raw, $hash ) = $pwd->generate();
+    my ( $raw, $hash ) = $pwd->generate;
+
     like $raw,  qr/^[!-~]{8}$/, "succeed to generate raw passwd";                          # 9.1
     like $raw,  qr/^[^0Oo1Il|!2Zz5sS\$6b9qCcKkUuVvWwXx.,:;~\-^'"`]{8}$/, "is readable";    # 9.2
     like $hash, qr/^[!-~]{13}$/, "succeed to generate hash with CORE::crypt";              # 9.3
-    is $pwd->verify( $raw,          $hash ), 1,  "succeed to verify";                      # 9.4
-    is $pwd->verify( $pwd->nonce(), $hash ), '', "fail to verify with random strings";     # 9.5
-    is $pwd->verify( '',            $hash ), '', "fail to verify with empty string";       # 9.6
+    is $pwd->verify( $raw,        $hash ), 1,  "succeed to verify";                        # 9.4
+    is $pwd->verify( $pwd->nonce, $hash ), '', "fail to verify with random strings";       # 9.5
+
+    is $pwd->verify( '', $hash ), '', "fail to verify with empty string";                  # 9.6
 
 };
 
 subtest "generate unreadable strings" => sub {    #10
     plan tests => 3;
     $pwd->readability(0);
-    my ( $raw, $hash ) = $pwd->generate();
+    my ( $raw, $hash ) = $pwd->generate;
+
     like $raw,  qr/^[!-~]{8}$/,  "succeed to generate raw passwd";    #10.1
     like $hash, qr/^[!-~]{13}$/, "succeed to generate hash";          #10.2
 

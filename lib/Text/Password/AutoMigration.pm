@@ -1,10 +1,9 @@
 package Text::Password::AutoMigration;
 our $VERSION = "0.17";
 
-use Carp;
+use autouse 'Carp' => qw(croak carp);
 use Moo;
 use strictures 2;
-
 extends 'Text::Password::SHA';
 
 =encoding utf-8
@@ -67,7 +66,7 @@ It must be a Boolean, defaults to 1.
 
 If you've already replaced all hash or started to make new applications with this module,
 
-you can call the constructor with I<migrate =E<lt> 0>.
+you can call the constructor with I<migrate =E<gt> 0>.
 
 Then I<verify()> would not return a new hash but always 1.
 
@@ -88,24 +87,28 @@ To tell the truth, this is the most useful method of this module.
 
 it Returns a true strings instead of boolean if the verification succeeds.
 
-Every value is B<brand new hash from SHA-512> because it is true anyway.
+Every value is B<brand new hash from SHA-512>
+because it is actually true in Perl anyway.
 
 So you can replace hash in your Database easily like below:
 
  my $pwd = Text::Password::AutoMigration->new();
+
  my $dbh = DBI->connect(...);
  my $db_hash_ref = $dbh->fetchrow_hashref(...);
-
  my $param = $req->body_parameters;
+
  my $hash = $pwd->verify( $param->{passwd}, $db_hash_ref->{passwd} );
- if ($hash) { # you don't have to execute this every time
+ my $verified = length $hash;
+ if ( $verified ) { # don't have to execute it every time
     my $sth = $dbh->prepare('UPDATE DB SET passwd=? WHERE uid =?') or die $dbh->errstr;
     $sth->excute( $hash, $param->{uid} ) or die $sth->errstr;
  }
 
-New hash length is at least 100 if length of nonce . So you have to change your DB like below:
+New hash length is 100 (if it defaults).
+So you have to change the Table with like below:
 
- ALTER TABLE User CHANGE passwd passwd VARCHAR(100);
+ ALTER TABLE User MODIFY passwd VARCHAR(100);
 
 =cut
 
@@ -113,24 +116,23 @@ around verify => sub {
     my ( $orig, $self ) = ( shift, shift );
     return 0 unless $self->$orig(@_);
     return $self->migrate() ? $self->encrypt(@_) : 1;
-
 };
 
 =head3 nonce( I<Int> )
 
 generates the random strings with enough strength.
 
-the length defaults to 10 or $self->default().
+the length defaults to 10 || $self->default().
 
 =head3 encrypt( I<Str> )
 
-returns hash with unix_sha512_crypt().
+returns hash with unix_sha512_crypt()
 
-salt will be made automatically.
+enough strength salts will be made automatically.
 
 =head3 generate( I<Int> )
 
-genarates pair of new password and it's hash.
+genarates a pair of new password and its hash.
 
 less readable characters(0Oo1Il|!2Zz5sS$6b9qCcKkUuVvWwXx.,:;~-^'"`) are forbidden
 unless $self->readability is 0.

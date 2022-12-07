@@ -2,7 +2,7 @@ package Text::Password::CoreCrypt;
 our $VERSION = "0.17";
 
 require 5.008_008;
-use Carp qw(croak carp);
+use autouse 'Carp' => qw(croak carp);
 
 use Moo;
 use strictures 2;
@@ -81,11 +81,9 @@ returns true if the verification succeeds.
 sub verify {
     my $self = shift;
     my ( $input, $data ) = @_;
-
     warn __PACKAGE__, " makes 13 bytes hash strings. Your data must be wrong: ", $data
         unless $data =~ /^[ !-~]{13}$/;
     return $data eq CORE::crypt( $input, $data );
-
 }
 
 =head3 nonce( I<Int> )
@@ -152,7 +150,6 @@ sub generate {
     do {    # redo unless it gets enough readability
         $raw = $self->nonce($length);
         return $raw, $self->encrypt($raw) unless $self->readability();
-
     } while $raw =~ /[0Oo1Il|!2Zz5sS\$6b9qCcKkUuVvWwXx.,:;~\-^'"`]/;
     return $raw, $self->encrypt($raw);
 }

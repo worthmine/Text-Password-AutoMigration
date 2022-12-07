@@ -3,9 +3,11 @@ our $VERSION = "0.17";
 
 use Moo;
 use strictures 2;
+extends 'Text::Password::CoreCrypt';
+use constant Min => 4;
+
 use autouse 'Carp'             => qw(croak carp);
 use autouse 'Crypt::PasswdMD5' => qw(unix_md5_crypt);
-use constant Min => 4;
 
 =encoding utf-8
 
@@ -62,13 +64,10 @@ returns true if the verification succeeds.
 
 =cut
 
-extends 'Text::Password::CoreCrypt';
-
 sub verify {
     my ( $self, $input, $data ) = ( shift, @_ );
     carp ref $self, " doesn't allow any Wide Characters or white spaces" if $input =~ /[^ -~]/;
     return $data eq unix_md5_crypt(@_);
-
 }
 
 =head3 nonce( I<Int> )

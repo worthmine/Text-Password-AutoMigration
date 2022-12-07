@@ -2,8 +2,10 @@ package Text::Password::SHA;
 our $VERSION = "0.17";
 
 use Moo;
-use Carp;
+use strictures 2;
 use Crypt::Passwd::XS;
+
+use autouse 'Carp'        => qw(croak carp);
 use autouse 'Digest::SHA' => qw(sha1_hex);
 
 use Types::Standard qw(Int);
@@ -55,8 +57,10 @@ You can let passwords to be more secure with setting I<readablity =E<lt> 0>.
 
 Then you can generate stronger passwords with I<generate()>.
 
- $pwd = Text::Pasword::AutoMiglation->new( readability => 0 ); # or
- $pwd->readability(0);
+$pwd = Text::Pasword::AutoMiglation->new( readability => 0 );
+
+# or $pwd->readability(0);
+
 
 =back
 
@@ -99,10 +103,9 @@ salt will be made automatically.
 
 sub encrypt {
     my ( $self, $input ) = @_;
-    croak ref $self, " requires a strings longer than at least ", Min if length($input) < Min;
-    croak ref $self, " doesn't allow any Wide Characters or white spaces" if $input =~ /[^ -~]/;
+    croak ref $self, " requires a strings longer than at least ", Min if length $input < Min;
+    croak ref $self, " doesn't allow any Wide Characters or control codes" if $input =~ /[^ -~]/;
     return Crypt::Passwd::XS::unix_sha512_crypt( $input, $self->nonce() );
-
 }
 
 =head3 generate( I<Int> )

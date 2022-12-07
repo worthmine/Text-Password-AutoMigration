@@ -79,7 +79,7 @@ sub verify {
     return $data eq Crypt::Passwd::XS::unix_sha256_crypt( $input, $data )
         if $data =~ m|^\$5\$[!-~]{1,$m}\$[\w/\.]{43}$|;
     return $data eq sha1_hex($input) if $data =~ /^[\da-f]{40}$/i;
-    carp __PACKAGE__, " doesn't support this hash: $data";
+    carp __PACKAGE__, " doesn't support this hash: ", $data;
     return;
 }
 

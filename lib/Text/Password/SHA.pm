@@ -71,17 +71,17 @@ returns true if the verification succeeds.
 sub verify {
     my ( $self, $input, $data ) = ( shift, @_ );
     my $m = $self->default();
+    carp 'Invalid input' unless length $input;
+    carp 'Invalid hash'  unless length $data;
 
     return $data eq Crypt::Passwd::XS::unix_sha512_crypt( $input, $data )
-
         if $data =~ m|^\$6\$[!-~]{1,$m}\$[\w/\.]{86}$|;
     return $data eq Crypt::Passwd::XS::unix_sha256_crypt( $input, $data )
-
         if $data =~ m|^\$5\$[!-~]{1,$m}\$[\w/\.]{43}$|;
     return $data eq sha1_hex($input) if $data =~ /^[\da-f]{40}$/i;
     return $data eq crypt( $input, $data );
-    croak __PACKAGE__, " doesn't support this hash: $data";
-
+    carp __PACKAGE__, " doesn't support this hash: $data";
+    return;
 }
 
 =head3 nonce( I<Int> )

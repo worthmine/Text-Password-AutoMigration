@@ -1,6 +1,7 @@
 Revision history for Perl extension Text-Password-AutoMigration
 
 {{$NEXT}}
+  - Replaced Moose to Moo
 
 0.16 2022-12-05T09:53:55Z
   - update for latest perl version

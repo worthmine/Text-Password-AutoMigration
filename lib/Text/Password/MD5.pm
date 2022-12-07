@@ -1,5 +1,5 @@
 package Text::Password::MD5;
-our $VERSION = "0.16";
+our $VERSION = "0.17";
 
 use Moo;
 use strictures 2;

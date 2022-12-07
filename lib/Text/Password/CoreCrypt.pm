@@ -1,5 +1,5 @@
 package Text::Password::CoreCrypt;
-our $VERSION = "0.16";
+our $VERSION = "0.17";
 
 require 5.008_008;
 use Carp qw(croak carp);

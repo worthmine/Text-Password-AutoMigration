@@ -70,7 +70,8 @@ returns true if the verification succeeds.
 
 sub verify {
     my ( $self, $input, $data ) = ( shift, @_ );
-    my $m = $self->default;
+    my $m = $self->default();
+
     return $data eq Crypt::Passwd::XS::unix_sha512_crypt( $input, $data )
 
         if $data =~ m|^\$6\$[!-~]{1,$m}\$[\w/\.]{86}$|;
@@ -101,8 +102,8 @@ sub encrypt {
     my ( $self, $input ) = @_;
     croak ref $self, " requires a strings longer than at least ", Min if length($input) < Min;
     croak ref $self, " doesn't allow any Wide Characters or white spaces" if $input =~ /[^ -~]/;
+    return Crypt::Passwd::XS::unix_sha512_crypt( $input, $self->nonce() );
 
-    return Crypt::Passwd::XS::unix_sha512_crypt( $input, $self->nonce );
 }
 
 =head3 generate( I<Int> )

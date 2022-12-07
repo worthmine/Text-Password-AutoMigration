@@ -98,7 +98,8 @@ the length defaults to 8 || $self->default().
 
 sub nonce {
     my $self   = shift;
-    my $length = shift || $self->default;
+    my $length = shift || $self->default();
+
     croak "Unvalid length for nonce was set" if $length !~ /^\d+$/ or $length < Min;
 
     my $n = '';
@@ -141,7 +142,8 @@ the length defaults to 8 || $self->default().
 
 sub generate {
     my $self   = shift;
-    my $length = shift || $self->default;
+    my $length = shift || $self->default();
+
     croak "Invalid length was set" unless $length =~ /^\d+$/;
     croak ref $self, "::generate requires at least ", Min, " length" if $length < Min;
     croak ref $self, "::generate requires list context" unless wantarray;
@@ -149,7 +151,8 @@ sub generate {
     my $raw;
     do {    # redo unless it gets enough readability
         $raw = $self->nonce($length);
-        return $raw, $self->encrypt($raw) unless $self->readability;
+        return $raw, $self->encrypt($raw) unless $self->readability();
+
     } while $raw =~ /[0Oo1Il|!2Zz5sS\$6b9qCcKkUuVvWwXx.,:;~\-^'"`]/;
     return $raw, $self->encrypt($raw);
 }

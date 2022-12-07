@@ -65,9 +65,10 @@ returns true if the verification succeeds.
 extends 'Text::Password::CoreCrypt';
 
 sub verify {
-    my ( $self, $input, $data ) = @_;
-    carp ref($self), " doesn't allow any Wide Characters or white spaces" if $input =~ /[^ -~]/;
-    return $data eq unix_md5_crypt( $input, $data );
+    my ( $self, $input, $data ) = ( shift, @_ );
+    carp ref $self, " doesn't allow any Wide Characters or white spaces" if $input =~ /[^ -~]/;
+    return $data eq unix_md5_crypt(@_);
+
 }
 
 =head3 nonce( I<Int> )
@@ -91,7 +92,8 @@ sub encrypt {
     croak ref $self, " doesn't allow any Wide Characters or white spaces" if $input =~ /[^ -~]/;
 
     my $salt = '';
-    do { $salt = $self->nonce } until $salt !~ /\$/;
+    do { $salt = $self->nonce() } until $salt !~ /\$/;
+
     return unix_md5_crypt( $input, $salt );
 }
 

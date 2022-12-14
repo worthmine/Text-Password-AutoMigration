@@ -6,7 +6,7 @@ Text::Password::AutoMigration - generate and verify Password with any contexts
 # SYNOPSIS
 
     my $pwd = Text::Password::AutoMigration->new();
-    my( $raw, $hash ) = $pwd->genarate();          # list context is required
+    my( $raw, $hash ) = $pwd->generate();          # list context is required
     my $input = $req->body_parameters->{passwd};
     my $data = $pwd->encrypt($input);              # you don't have to care about salt
     my $flag = $pwd->verify( $input, $data );
@@ -102,7 +102,7 @@ salt will be made automatically.
 
 ### generate( _Int_ )
 
-genarates pair of new password and it's hash.
+generates pair of new password and its hash.
 
 less readable characters(0Oo1Il|!2Zz5sS$6b9qCcKkUuVvWwXx.,:;~-^'"\`) are forbidden
 unless $self->readability is 0.

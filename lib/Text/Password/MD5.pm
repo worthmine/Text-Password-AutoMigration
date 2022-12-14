@@ -18,7 +18,7 @@ Text::Password::MD5 - generate and verify Password with unix_md5_crypt()
 =head1 SYNOPSIS
 
  my $pwd = Text::Password::MD5->new();
- my( $raw, $hash ) = $pwd->genarate();          # list context is required
+ my( $raw, $hash ) = $pwd->generate();          # list context is required
  my $input = $req->body_parameters->{passwd};
 my $data = $pwd->encrypt($input);    # you don't have to care about salt
 
@@ -98,7 +98,7 @@ sub encrypt {
 
 =head3 generate( I<Int> )
 
-genarates pair of new password and it's hash.
+generates pair of new password and its hash.
 
 less readable characters I<(0Oo1Il|!2Zz5sS$6b9qCcKkUuVvWwXx.,:;~-^'"`)>
 are forbiddenunless $self->readability is 0.

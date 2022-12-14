@@ -1,25 +1,23 @@
 package Text::Password::CoreCrypt;
-our $VERSION = "0.16";
+our $VERSION = "0.17";
 
 require 5.008_008;
-use Carp qw(croak carp);
+use autouse 'Carp' => qw(croak carp);
 
 use Moo;
 use strictures 2;
-use namespace::clean;
-use Types::Standard qw(Int Bool);
 
+use Types::Standard qw(Int Bool);
 use constant Min => 4;
+
 has default => ( is => 'rw', isa => Int->where('$_ >= 8'), default => sub {8} );
 has readability => ( is => 'rw', isa => Bool, default => 1 );
+
 no Moo::sification;
 
-my @ascii = (
-    '!',        '#', qw! " $ % & ' ( ) * + !, ',', qw! - . / !,
-    0 .. 9,     qw( : ; < = > ? @ ),
-    'A' .. 'Z', qw( [ \ ] ^ _ ` ),     # to void syntax highlighting -> `
-    'a' .. 'z', qw( { | } ~ ),
-);
+my @w     = ( 0 .. 9, 'a' .. 'z', 'A' .. 'Z' );
+my @seeds = ( @w,     '.', '/' );
+my @ascii = ( @seeds, '#', ',', qw# ! " $ % & ' ( ) * + - : ; < = > ? @ [ \ ] ^ _ ` { | } ~ # );
 
 =encoding utf-8
 
@@ -32,7 +30,8 @@ Text::Password::CoreCrypt - generate and verify Password with perl CORE::crypt()
  my $pwd = Text::Password::CoreCrypt->new();
  my( $raw, $hash ) = $pwd->generate();          # list context is required
  my $input = $req->body_parameters->{passwd};
- my $data = $pwd->encrypt($input);              # salt is made automatically
+my $data = $pwd->encrypt($input);    # you don't have to care about salt
+
  my $flag = $pwd->verify( $input, $data );
 
 =head1 DESCRIPTION
@@ -49,13 +48,17 @@ No arguments are required. But you can set some parameters.
 
 =over
 
-=item default(I<Int>)
+
+=item default( I<Int> )
+
 
 You can set default length with param 'default' like below:
 
  $pwd = Text::Pasword::AutoMiglation->new( default => 12 );
 
-=item readablity(I<Bool>)
+
+=item readablity( I<Bool> )
+
 
 Or you can set default strength for password with param 'readablity'.
 
@@ -78,12 +81,12 @@ returns true if the verification succeeds.
 sub verify {
     my $self = shift;
     my ( $input, $data ) = @_;
-    warn "CORE::crypt makes 13bytes hash strings. Your data must be wrong: $data"
-        if $data !~ /^[ !-~]{13}$/;
+    warn __PACKAGE__, " makes 13 bytes hash strings. Your data must be wrong: ", $data
+        unless $data =~ /^[ !-~]{13}$/;
     return $data eq CORE::crypt( $input, $data );
 }
 
-=head3 nonce(I<Int>)
+=head3 nonce( I<Int> )
 
 generates the random strings with enough strength.
 
@@ -93,11 +96,12 @@ the length defaults to 8 || $self->default().
 
 sub nonce {
     my $self   = shift;
-    my $length = shift || $self->default;
+    my $length = shift || $self->default();
+
     croak "Unvalid length for nonce was set" if $length !~ /^\d+$/ or $length < Min;
 
     my $n = '';
-    my @w = ( 0 .. 9, 'a' .. 'z', 'A' .. 'Z' );
+
     do {    # redo unless it gets enough strength
         $n = $w[ rand @w ];
         $n .= $ascii[ rand @ascii ] while length $n < $length;
@@ -106,7 +110,7 @@ sub nonce {
     return $n;
 }
 
-=head3 encrypt(I<Str>)
+=head3 encrypt( I<Str> )
 
 returns hash with CORE::crypt().
 
@@ -115,17 +119,15 @@ salt will be made automatically.
 =cut
 
 sub encrypt {
-    my $self  = shift;
-    my $input = shift;
-    croak __PACKAGE__ . " requires at least " . Min . "length"   if length $input < Min;
-    carp __PACKAGE__ . " ignores the password with over 8 bytes" if length $input > 8;
-    croak __PACKAGE__ . " doesn't allow any Wide Characters or white spaces\n"
-        if $input =~ /[^ -~]/;
-    my @seeds = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9, '.', '/' );
+    my ( $self, $input ) = @_;
+    croak __PACKAGE__, " requires at least ", Min, "length" if length $input < Min;
+    carp __PACKAGE__, " ignores the password with over 8 bytes" if length $input > 8;
+    croak __PACKAGE__, " doesn't allow any Wide Characters or white spaces" if $input =~ /[^ -~]/;
+
     return CORE::crypt( $input, $seeds[ rand @seeds ] . $seeds[ rand @seeds ] );
 }
 
-=head3 generate(I<Int>)
+=head3 generate( I<Int> )
 
 generates pair of new password and its hash.
 
@@ -138,15 +140,16 @@ the length defaults to 8 || $self->default().
 
 sub generate {
     my $self   = shift;
-    my $length = shift || $self->default;
-    croak "unvalid length was set"                        unless $length =~ /^\d+$/;
-    croak ref($self) . "::generate requires list context" unless wantarray;
-    croak ref($self) . "::generate requires at least " . Min . " length" if $length < Min;
+    my $length = shift || $self->default();
+
+    croak "Invalid length was set" unless $length =~ /^\d+$/;
+    croak ref $self, "::generate requires at least ", Min, " length" if $length < Min;
+    croak ref $self, "::generate requires list context" unless wantarray;
 
     my $raw;
     do {    # redo unless it gets enough readability
         $raw = $self->nonce($length);
-        return $raw, $self->encrypt($raw) unless $self->readability;
+        return $raw, $self->encrypt($raw) unless $self->readability();
     } while $raw =~ /[0Oo1Il|!2Zz5sS\$6b9qCcKkUuVvWwXx.,:;~\-^'"`]/;
     return $raw, $self->encrypt($raw);
 }

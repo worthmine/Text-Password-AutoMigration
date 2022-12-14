@@ -15,7 +15,7 @@ has readability => ( is => 'rw', isa => Bool, default => 1 );
 
 no Moo::sification;
 
-my @w     = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );
+my @w     = ( 0 .. 9, 'a' .. 'z', 'A' .. 'Z' );
 my @seeds = ( @w,     '.', '/' );
 my @ascii = ( @seeds, '#', ',', qw# ! " $ % & ' ( ) * + - : ; < = > ? @ [ \ ] ^ _ ` { | } ~ # );
 

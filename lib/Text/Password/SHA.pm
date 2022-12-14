@@ -1,5 +1,5 @@
 package Text::Password::SHA;
-our $VERSION = "0.17";
+our $VERSION = "0.18";
 
 use Moo;
 use strictures 2;

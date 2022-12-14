@@ -1,5 +1,5 @@
 package Text::Password::AutoMigration;
-our $VERSION = "0.17";
+our $VERSION = "0.18";
 
 use autouse 'Carp' => qw(croak carp);
 use Moo;

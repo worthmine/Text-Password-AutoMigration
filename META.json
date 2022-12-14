@@ -74,6 +74,7 @@
    "version" : "0.17",
    "x_authority" : "cpan:WORTHMINE",
    "x_contributors" : [
+      "Ed Sabol <edwardjsabol@gmail.com>",
       "Mohammad S Anwar <mohammad.anwar@yahoo.com>",
       "Yuki Yoshida <worthmine@gmail.com>"
    ],

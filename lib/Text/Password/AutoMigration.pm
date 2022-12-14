@@ -46,7 +46,8 @@ No arguments are required. But you can set some parameters.
 
 You can set default length with using 'default' argument like below:
 
- $pwd = Text::Pasword::AutoMiglation->new( default => 8 );
+$pwd = Text::Password::AutoMiglation->new( default => 8 );
+
 
 It must be an Int, defaults to 10.
 
@@ -54,7 +55,8 @@ It must be an Int, defaults to 10.
 
 You can set default strength for password with usnig 'readablity' argument like below:
 
- $pwd = Text::Pasword::AutoMiglation->new( readability => 0 );
+$pwd = Text::Password::AutoMiglation->new( readability => 0 );
+
 
 It must be a Boolean, defaults to 1.
 

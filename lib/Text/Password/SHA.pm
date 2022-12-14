@@ -44,7 +44,7 @@ No arguments are required. But you can set some arguments.
 
 You can set other length to 'default' like below:
 
- $pwd = Text::Pasword::AutoMiglation->new( default => 8 );
+ $pwd = Text::Password::AutoMiglation->new( default => 8 );
 
 =item readablity( I<Bool> )
 
@@ -57,7 +57,7 @@ You can let passwords to be more secure with setting I<readablity =E<lt> 0>.
 
 Then you can generate stronger passwords with I<generate()>.
 
-$pwd = Text::Pasword::AutoMiglation->new( readability => 0 );
+$pwd = Text::Password::AutoMiglation->new( readability => 0 );
 
 # or $pwd->readability(0);
 

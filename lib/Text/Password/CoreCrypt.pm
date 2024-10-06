@@ -17,7 +17,7 @@ no Moo::sification;
 
 my @w     = ( 0 .. 9, 'a' .. 'z', 'A' .. 'Z' );
 my @seeds = ( @w,     '.', '/' );
-my @ascii = ( @seeds, '#', ',', qw# ! " $ % & ' ( ) * + - : ; < = > ? @ [ \ ] ^ _ ` { | } ~ # );
+my @ascii = ( @seeds, '#', ',', qw# ! $ % & ( ) * + - : ; < = > ? @ [ ] ^ _ ` { | } ~ # ); # ", ' and \ are omitted for security reasons
 
 =encoding utf-8
 

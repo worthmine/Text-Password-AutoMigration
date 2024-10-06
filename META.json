@@ -4,7 +4,7 @@
       "Yuki Yoshida <worthmine@users.noreply.github.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v3.1.14, CPAN::Meta::Converter version 2.150010",
+   "generated_by" : "Minilla/v3.1.25, CPAN::Meta::Converter version 2.150010",
    "license" : [
       "perl_5"
    ],
@@ -67,7 +67,7 @@
       "homepage" : "https://github.com/worthmine/Text-Password-AutoMigration",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/worthmine/Text-Password-AutoMigration.git",
+         "url" : "https://github.com/worthmine/Text-Password-AutoMigration.git",
          "web" : "https://github.com/worthmine/Text-Password-AutoMigration"
       }
    },
@@ -76,8 +76,8 @@
    "x_contributors" : [
       "Ed Sabol <edwardjsabol@gmail.com>",
       "Mohammad S Anwar <mohammad.anwar@yahoo.com>",
-      "Yuki Yoshida <worthmine@gmail.com>"
+      "worthmine <worthmine@gmail.com>"
    ],
-   "x_serialization_backend" : "JSON::PP version 4.07",
+   "x_serialization_backend" : "JSON::PP version 4.16",
    "x_static_install" : 1
 }

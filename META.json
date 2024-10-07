@@ -71,12 +71,13 @@
          "web" : "https://github.com/worthmine/Text-Password-AutoMigration"
       }
    },
-   "version" : "0.19",
+   "version" : "0.20",
    "x_authority" : "cpan:WORTHMINE",
    "x_contributors" : [
       "Ed Sabol <edwardjsabol@gmail.com>",
       "Mohammad S Anwar <mohammad.anwar@yahoo.com>",
-      "worthmine <worthmine@gmail.com>"
+      "Yuki Yoshida <worthmine@gmail.com>",
+      "Yuki Yoshida(worthmine) <2944869+worthmine@users.noreply.github.com>"
    ],
    "x_serialization_backend" : "JSON::PP version 4.16",
    "x_static_install" : 1

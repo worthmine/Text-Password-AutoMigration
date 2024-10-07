@@ -42,9 +42,10 @@
       },
       "runtime" : {
          "requires" : {
+            "Carp" : "1.54",
             "Crypt::Passwd::XS" : "0.601",
-            "Moo" : "2.005004",
-            "Types::Standard" : "1.012004",
+            "Moo" : "2.005005",
+            "Types::Standard" : "2.006",
             "perl" : "5.008008",
             "strictures" : "2.000006"
          }
@@ -71,7 +72,7 @@
          "web" : "https://github.com/worthmine/Text-Password-AutoMigration"
       }
    },
-   "version" : "0.20",
+   "version" : "0.21",
    "x_authority" : "cpan:WORTHMINE",
    "x_contributors" : [
       "Ed Sabol <edwardjsabol@gmail.com>",

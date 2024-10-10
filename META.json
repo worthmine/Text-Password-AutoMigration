@@ -72,7 +72,7 @@
          "web" : "https://github.com/worthmine/Text-Password-AutoMigration"
       }
    },
-   "version" : "0.19",
+   "version" : "0.30",
    "x_authority" : "cpan:WORTHMINE",
    "x_contributors" : [
       "Ed Sabol <edwardjsabol@gmail.com>",

@@ -2,6 +2,9 @@ Revision history for Perl extension Text-Password-AutoMigration
 
 {{$NEXT}}
 
+0.31 2024-10-11T04:04:28Z
+ - fixed the POD
+
 0.30 2024-10-10T14:25:15Z
   - omitted qw( "  ' \ ) for security reasons
 

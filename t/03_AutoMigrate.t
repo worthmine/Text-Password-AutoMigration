@@ -45,8 +45,8 @@ SKIP: {
 note( 'generated hash strings with SHA512 is ' . $hash );
 
 subtest 'verify with SHA512 100 times' => sub {    # 5
-    plan tests => 200;
-    foreach ( 1 .. 100 ) {
+    plan tests => 2000;
+    foreach ( 1 .. 1000 ) {
         $flag = $pwd->verify( $raw, $hash );
         like $flag, qr|^\$6\$[!-~\s]{1,$m}\$[\w/\.]{86}$|, "verify: " . $flag;    # 5.1
         isnt $flag, $hash;                                                      # 5.2

@@ -2,6 +2,9 @@ Revision history for Perl extension Text-Password-AutoMigration
 
 {{$NEXT}}
 
+0.40 2024-10-15T00:28:19Z
+ - allow to contain whitespaces in salts
+
 0.31 2024-10-11T04:04:28Z
  - fixed the POD
 

@@ -1,10 +1,10 @@
 use strict;
 use warnings;
-use Test::More tests => 5;
+use Test::More tests => 6;
 
 SKIP: {
     eval { require Crypt::PasswdMD5 };
-    skip 'Crypt::PasswdMD5 is not installed', 5 if $@;
+    skip 'Crypt::PasswdMD5 is not installed', 6 if $@;
 
     use_ok 'Text::Password::MD5';               # 1
     my $pwd = new_ok('Text::Password::MD5');    # 2
@@ -23,6 +23,15 @@ SKIP: {
         is $pwd->verify( $pwd->nonce, $hash ), '', "fail to verify with random strings";        # 5.3
 
         is $pwd->verify( '', $hash ), '', "fail to verify with empty string";                   # 5.4
+    };
+
+    subtest "rondom tests" => sub {                                                         # 6
+        plan tests => 1000;
+        for (1..500){
+            ( $raw, $hash ) = $pwd->generate;
+            like $hash, qr/^\$1\$[ -~]{1,$m}\$[ -~]{22}$/, "succeed to generate hash with MD5";    # 6.1
+            is $pwd->verify( $raw,        $hash ), 1,  "succeed to verify";                         # 6.2
+        }
     };
 }
 

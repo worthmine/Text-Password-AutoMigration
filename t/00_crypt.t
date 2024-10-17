@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 11;
+use Test::More tests => 12;
 
 use_ok 'Text::Password::CoreCrypt';                                                          # 1
 my $pwd = new_ok('Text::Password::CoreCrypt');                                               # 2
@@ -44,5 +44,14 @@ subtest "generate unreadable strings" => sub {    #10
 my ( $raw, $hash ) = eval { $pwd->generate(3) };
 like $@, qr/^Text::Password::CoreCrypt::generate requires at least 4 length/,
     "fail to make too short password";                                #11
+
+subtest "rondom tests" => sub {                                                         # 12
+    plan tests => 1000;
+    for (1..500){
+        ( $raw, $hash ) = $pwd->generate;
+        like $hash, qr/^\S[ -~]{12}$/, "succeed to generate hash";          # 12.1
+        is $pwd->verify( $raw,        $hash ), 1,  "succeed to verify";     # 12.2
+    }
+};
 
 done_testing;

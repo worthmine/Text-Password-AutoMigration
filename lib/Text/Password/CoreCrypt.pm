@@ -107,8 +107,13 @@ sub nonce {
     do {    # redo unless it gets enough strength
         $n = $w[ rand @w ];
         $n .= $ascii[ rand @ascii ] while length $n < $length;
+    } while $n =~ /^\w+$/   # full of word characters 
+        or $n =~ /^\W+$/    # full of non-word characters
+        or $n !~ /\d/       # no numbers
+        or $n !~ /[A-Z]/    # no upper case
+        or $n !~ /[a-z]/    # no lower case 
+        or $n =~ /\s+$/;    # white spaces at the end
 
-    } while $n =~ /^\w+$/ or $n =~ /^\W+$/ or $n !~ /\d/ or $n !~ /[A-Z]/ or $n !~ /[a-z]/;
     return $n;
 }
 
